@@ -23,10 +23,11 @@ sub setup {
     my ($CFG) = @_;
 
     #   parse command line options
-    $Getopt::Long::bundling = 1;
     $opt_x = 0;
     $opt_v = 0;
     @opt_o = ();
+    $Getopt::Long::bundling = 1;
+    $Getopt::Long::getopt_compat = 0;
     if (not Getopt::Long::GetOptions("x|debug",
                                      "v|version",
                                      "o|outputfile=s@")) {
@@ -57,13 +58,11 @@ sub setup {
     }
 
     #   add additional options
-    while ($INPUT =~ s|^%!slice\s+([^\n]+)\n||im) {
-        @ARGV = split(/\s+/, $1);
-        if (not Getopt::Long::GetOptions("x|debug",
-                                         "v|version",
-                                         "o|outputfile=s@")) {
-            &usage;
-        }
+    $INPUT =~ s|^%!slice\s+(.*?)\n|push(@ARGV, split(' ', $1)), ''|egim;
+    if (not Getopt::Long::GetOptions("x|debug",
+                                     "v|version",
+                                     "o|outputfile=s@")) {
+        &usage;
     }
     if ($#opt_o == -1) {
         @opt_o = ( "ALL:-" ); # default is all on stdout

@@ -1,7 +1,7 @@
-#!@path_perl@
+#!@PATH_PERL@
 ##
-##  unrequire -- recursive filter to substitute each Perl
-##               'require' command with the contents of the file
+##  expand -- recursive filter to substitute each Perl
+##            'require' command with the contents of the file
 ##
 ##  Copyright (c) 1995 Ralf S. Engelschall, <rse@engelschall.com>
 ##

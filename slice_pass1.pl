@@ -117,9 +117,11 @@ sub pass1 {
     #   check: were all opened slices really closed?
     if ($CURRENT_LEVEL_SET->Norm > 0) {
         print STDERR "ERROR: Some slices were not closed: ";
-        for (my $i = 0; $i <= $CURRENT_LEVEL_SET->Max(); $i++) {
+		my $i;
+        for ($i = 0; $i <= $CURRENT_LEVEL_SET->Max(); $i++) {
             if ($CURRENT_LEVEL_SET->bit_test($i)) {
-                foreach my $name (keys(%CURRENT_LEVEL_BRAIN)) {
+				my $name;
+                foreach $name (keys(%CURRENT_LEVEL_BRAIN)) {
                     if ($CURRENT_LEVEL_BRAIN{$name} == ($i+1)) {
                         print STDERR "<$name> ";
                     }

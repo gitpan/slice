@@ -13,7 +13,7 @@ top_srcdir      = @top_srcdir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-PATH_PERL       = @path_perl@
+PATH_PERL       = @PATH_PERL@
 INSTALL         = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA    = @INSTALL_DATA@
@@ -26,7 +26,7 @@ mandir          = ${exec_prefix}/man
 
 have_getoptlong = @have_getoptlong@
 have_bitvector  = @have_bitvector@
-have_io         = @have_bitvector@
+have_io         = @have_io@
 
 # ------------------------------------------------
 #   TARGETS
@@ -35,7 +35,7 @@ have_io         = @have_bitvector@
 all:
 	@if [ $(have_getoptlong) = 0 ]; then \
 		if [ ! -f getoptlong/.configured ]; then \
-		    cd getoptlong; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+		    cd getoptlong; $(PATH_PERL) Makefile.PL PREFIX=$(libdir)/perl_private; \
 			touch .configured; \
 			cd ..; \
 		fi; \
@@ -43,7 +43,7 @@ all:
 	fi
 	@if [ $(have_bitvector) = 0 ]; then \
 		if [ ! -f bitvector/.configured ]; then \
-		    cd bitvector; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+		    cd bitvector; $(PATH_PERL) Makefile.PL PREFIX=$(libdir)/perl_private; \
 			touch .configured; \
 			cd ..; \
 		fi; \
@@ -51,7 +51,7 @@ all:
 	fi
 	@if [ $(have_io) = 0 ]; then \
 		if [ ! -f io/.configured ]; then \
-		    cd io; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+		    cd io; $(PATH_PERL) Makefile.PL PREFIX=$(libdir)/perl_private; \
 			touch .configured; \
 			cd ..; \
 		fi; \
@@ -60,13 +60,13 @@ all:
 
 install:
 	-@if [ $(have_getoptlong) = 0 ]; then \
-		cd getoptlong; $(MAKE) pure_install; \
+		cd getoptlong; $(MAKE) pure_install PREFIX=$(libdir)/perl_private; \
 	fi
 	-@if [ $(have_bitvector) = 0 ]; then \
-		cd bitvector; $(MAKE) pure_install; \
+		cd bitvector; $(MAKE) pure_install PREFIX=$(libdir)/perl_private; \
 	fi
 	-@if [ $(have_io) = 0 ]; then \
-		cd io; $(MAKE) pure_install; \
+		cd io; $(MAKE) pure_install PREFIX=$(libdir)/perl_private; \
 	fi
 
 clean:

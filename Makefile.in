@@ -13,7 +13,7 @@ top_srcdir      = @top_srcdir@
 srcdir          = @srcdir@
 VPATH           = @srcdir@
 
-PATH_PERL       = @path_perl@
+PATH_PERL       = @PATH_PERL@
 INSTALL         = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA    = @INSTALL_DATA@
@@ -77,11 +77,9 @@ configure: configure.in
 slice: slice_main.pl slice_term.pl slice_util.pl \
        slice_setup.pl slice_pass1.pl slice_pass2.pl slice_pass3.pl
 	./etc/expand slice_main.pl |\
-	./etc/crunch README |\
 	sed -e "s|\@path_perl\@|$(PATH_PERL)|" -e '/@(#)/d' -e '/^;#/d' \
 	>slice
 	chmod a+x slice
-	$(PATH_PERL) -c slice
 
 slice_term.pl: slice_term.y
 	pbyacc -l -P slice_term.y
@@ -193,6 +191,7 @@ distclean:
 	-rm -f config.status
 	-rm -f Makefile
 	-rm -f slice_boot.pl
+	-rm -f etc/expand
 
 realclean: 
 	@$(MAKE) distclean

@@ -62,5 +62,4 @@ WriteMakefile(
 					map { "$_ */$_ */*/$_" }
 					qw(*% *.html *.b[ac]k *.old *.orig))
 			   },
-	'macro'		=> { INSTALLDIRS => 'perl' },
 );
