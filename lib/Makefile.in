@@ -24,8 +24,8 @@ bindir          = @bindir@
 libdir          = @libdir@
 mandir          = ${exec_prefix}/man
 
-have_getoptlong     = @have_getoptlong@
-have_setintegerfast = @have_setintegerfast@
+have_getoptlong = @have_getoptlong@
+have_bitvector  = @have_bitvector@
 
 # ------------------------------------------------
 #   TARGETS
@@ -40,33 +40,33 @@ all:
 		fi; \
 		cd getoptlong; $(MAKE); \
 	fi
-	@if [ $(have_setintegerfast) = 0 ]; then \
-		if [ ! -f setintegerfast/.configured ]; then \
-		    cd setintegerfast; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+	@if [ $(have_bitvector) = 0 ]; then \
+		if [ ! -f bitvector/.configured ]; then \
+		    cd bitvector; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
 			touch .configured; \
 			cd ..; \
 		fi; \
-		cd setintegerfast; $(MAKE); \
+		cd bitvector; $(MAKE); \
 	fi
 
 install:
 	@if [ $(have_getoptlong) = 0 ]; then \
 		cd getoptlong; $(MAKE) pure_install; \
 	fi
-	@if [ $(have_setintegerfast) = 0 ]; then \
-		cd setintegerfast; $(MAKE) pure_install; \
+	@if [ $(have_bitvector) = 0 ]; then \
+		cd bitvector; $(MAKE) pure_install; \
 	fi
 
 clean:
 	cd getoptlong; $(MAKE) clean
 	-@mv getoptlong/Makefile.old getoptlong/Makefile 2>/dev/null
-	cd setintegerfast; $(MAKE) clean
-	-@mv setintegerfast/Makefile.old setintegerfast/Makefile 2>/dev/null
+	cd bitvector; $(MAKE) clean
+	-@mv bitvector/Makefile.old bitvector/Makefile 2>/dev/null
 
 distclean:
 	@$(MAKE) clean
 	cd getoptlong; rm -f .configured Makefile.old Makefile
-	cd setintegerfast; rm -f .configured Makefile.old Makefile
+	cd bitvector; rm -f .configured Makefile.old Makefile
 	-rm -f Makefile
 
 ##EOF##

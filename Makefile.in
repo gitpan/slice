@@ -128,14 +128,14 @@ _BUILDDIST = \
 release: distclean
 	@$(_GETDISTINFO) \
     _distname="slice-$${_version}"; \
-    _tarball="../web/distrib/$${_distname}.tar.gz"; \
+    _tarball="$${_distname}.tar.gz"; \
     echo "Release Distribution: SLICE Version $$_version"; \
     $(_BUILDDIST)
 
 snap: 
 	@$(_GETDISTINFO) \
     _distname="slice-$${_version}-$${_date}-SNAP"; \
-    _tarball="../web/distrib/$${_distname}.tar.gz"; \
+    _tarball="$${_distname}.tar.gz"; \
     echo "Snap of whole source tree: SLICE Version $$_version as of $$_date"; \
     $(_BUILDDIST)
 

@@ -43,7 +43,7 @@ require "slice_boot.pl";
 require 5.003;
 
 use Getopt::Long 2.06;
-use Set::IntegerFast 3.0;
+use Bit::Vector 4.0;
 
 require "slice_set.pl";
 require "slice_term.pl";
@@ -108,7 +108,7 @@ else {
 $INPUT = join("", @IN);
 $NEW = "";
 @NAMES = ();
-$LEVELS = new Set::IntegerFast(100);
+$LEVELS = new Bit::Vector(100);
 %SLICE = ();
 $maxlevel = 0;
 
@@ -116,16 +116,16 @@ sub alloclevel {
     my ($i);
 
     for ($i = 0; $i < 100; $i++) {
-        last if (not $LEVELS->in($i));
+        last if (not $LEVELS->bit_test($i));
     }
-    $LEVELS->Insert($i);
+    $LEVELS->Bit_On($i);
     return $i + 1;
 }
 
 sub clearlevel {
     my ($level) = @_;
 
-    $LEVELS->Delete($level - 1);
+    $LEVELS->Bit_Off($level - 1);
 }
 
 $pos = 0;
@@ -191,14 +191,14 @@ if ($LEVELS->Norm != 0) {
 
 $MAXSETLEN = length($NEW)+1;
 %SLICESET = ();
-$set  = new Set::IntegerFast($MAXSETLEN);
-$setA = new Set::IntegerFast($MAXSETLEN);
+$set  = new Bit::Vector($MAXSETLEN);
+$setA = new Bit::Vector($MAXSETLEN);
 
 sub SetClone {
     my ($set) = @_;
     my ($tmp);
 
-    $tmp = new Set::IntegerFast($set->Size());
+    $tmp = new Bit::Vector($set->Size());
     $tmp->Copy($set);
     return $tmp;
 }
@@ -256,7 +256,7 @@ sub WriteOutput {
     $set = eval "$var";
 
     for ($i = 0; $i <= $set->Max(); $i++) {
-        if ($set->in($i)) {
+        if ($set->bit_test($i)) {
             print OUT substr($IN, $i, 1);
         }
     }

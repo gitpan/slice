@@ -684,14 +684,14 @@ fi
 
 
 
-echo $ac_n "checking for Perl module Set::IntegerFast""... $ac_c" 1>&6
-echo "configure:687: checking for Perl module Set::IntegerFast" >&5
+echo $ac_n "checking for Perl module Bit::Vector""... $ac_c" 1>&6
+echo "configure:687: checking for Perl module Bit::Vector" >&5
 TMPFILE=/tmp/x
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
-    require Set::IntegerFast;
-    Set::IntegerFast->require_version('3.0');
+    require Bit::Vector;
+    Bit::Vector->require_version('4.0');
 };
 if ($@) {
     print "failed";
@@ -702,10 +702,10 @@ EOT
 rc=`$path_perl $TMPFILE`; 
 rm -f $TMPFILE
 if test ".$rc" = .ok; then
-	have_setintegerfast=1
+	have_bitvector=1
     echo "$ac_t""found - will use installed version" 1>&6
 else
-    have_setintegerfast=0
+    have_bitvector=0
     echo "$ac_t""not found - will use private version" 1>&6
 fi
 
@@ -896,7 +896,7 @@ s%@INSTALL_PROGRAM@%$INSTALL_PROGRAM%g
 s%@INSTALL_DATA@%$INSTALL_DATA%g
 s%@path_perl@%$path_perl%g
 s%@have_getoptlong@%$have_getoptlong%g
-s%@have_setintegerfast@%$have_setintegerfast%g
+s%@have_bitvector@%$have_bitvector%g
 s%@INSTALLPRIVLIB@%$INSTALLPRIVLIB%g
 s%@INSTALLARCHLIB@%$INSTALLARCHLIB%g
 s%@INSTALLSITELIB@%$INSTALLSITELIB%g

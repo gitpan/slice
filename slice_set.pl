@@ -30,7 +30,7 @@ sub asc2set {
         ($level, $from, $to) = ($interval =~ m|^(\d+):(\d+):(\d+)$|);
         next if (($onlylevel ne "") and ($level != $onlylevel)); 
         next if ($from > $to);
-        $set->Fill_Interval($from, $to);
+        $set->Interval_Fill($from, $to);
     }
 }
 

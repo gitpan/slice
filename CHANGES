@@ -56,3 +56,7 @@
       o again fixed MakeMaker install path determination.
         in GNU autoconf again. Now it should really work correctly ;_)
 
+  1.1.0 970423
+
+      o upgraded from Set::IntegerFast 3.2 to Bit::Vector 4.0 module
+
