@@ -80,3 +80,9 @@
       o added SLICE@ syntax (see slice.pod)
       o overhauled and optimized the output generation
 
+  1.2.1 970812
+
+      o Perl 5.004 not needed, 5.003 works too.
+      o added support for ``%!slice ...'' lines
+        which can overwrite the options from within the file
+

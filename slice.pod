@@ -184,6 +184,21 @@ Displays the version identification string.
 
 =back
 
+=head1 SPECIAL FEATURE
+
+Sometimes it can be very useful to be able to provide command line options
+directly within the input file, for instance to setup one or more B<-o>
+options. For this F<slice> recognizes lines of the form
+
+   %!slice OPTIONS
+
+in the input file and automatically adds OPTIONS to the argument line options.
+These lines have to start in column 0.
+
+Example:
+
+   %!slice -oTOC:contents.txt
+
 =head1 EXAMPLE
 
 Assume the following simple multi-language article file F<article.src>,

@@ -35,9 +35,6 @@ sub setup {
     if ($opt_v) {
         &hello;
     }
-    if ($#opt_o == -1) {
-        @opt_o = ( "ALL:-" ); # default is all on stdout
-    }
 
     #   process command line arguments and
     #   read input file
@@ -57,6 +54,19 @@ sub setup {
     }
     else {
         &usage;
+    }
+
+    #   add additional options
+    while ($INPUT =~ s|^%!slice\s+([^\n]+)\n||im) {
+        @ARGV = split(/\s+/, $1);
+        if (not Getopt::Long::GetOptions("x|debug",
+                                         "v|version",
+                                         "o|outputfile=s@")) {
+            &usage;
+        }
+    }
+    if ($#opt_o == -1) {
+        @opt_o = ( "ALL:-" ); # default is all on stdout
     }
 
     #   setup the $CFG hash

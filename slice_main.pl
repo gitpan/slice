@@ -2,7 +2,7 @@
 eval 'exec @path_perl@ -S $0 ${1+"$@"}'
     if $running_under_some_shell;
 
-require 5.004;
+require 5.003;
 
 require "slice_boot.pl";
 

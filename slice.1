@@ -93,7 +93,7 @@
 .nr % 0
 .rr F
 .\}
-.TH SLICE 1 "EN" "11/Aug/97" "Ralf S. Engelschall"
+.TH SLICE 1 "EN" "12/Aug/97" "Ralf S. Engelschall"
 .IX Title "SLICE 1"
 .UC
 .IX Name "Slice - Extract pre-defined slices from an ASCII file"
@@ -345,6 +345,23 @@ console for debugging purpose.
 .Ip "\fB\-v\fR" 5
 .IX Item "\fB\-v\fR"
 Displays the version identification string.
+.SH "SPECIAL FEATURE"
+.IX Header "SPECIAL FEATURE"
+Sometimes it can be very useful to be able to provide command line options
+directly within the input file, for instance to setup one or more \fB\-o\fR
+options. For this \fIslice\fR recognizes lines of the form
+.PP
+.Vb 1
+\&   %!slice OPTIONS
+.Ve
+in the input file and automatically adds OPTIONS to the argument line options.
+These lines have to start in column 0.
+.PP
+Example:
+.PP
+.Vb 1
+\&   %!slice -oTOC:contents.txt
+.Ve
 .SH "EXAMPLE"
 .IX Header "EXAMPLE"
 Assume the following simple multi-language article file \fIarticle.src\fR,
