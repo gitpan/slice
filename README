@@ -6,7 +6,7 @@
                   
   Slice -- Extract out pre-defined slices of an ASCII file
 
-  Version 1.2.4 (19-08-1997)
+  Version 1.2.8 (12-12-1997)
 
   The slice program reads an inputfile and divide its prepaired ASCII contents
   into possibly overlapping slices. These slices are determined by enclosing

@@ -9,14 +9,16 @@ sub verbose {
     my ($str) = @_;
 
     if ($main::CFG->{OPT}->{X}) {
-        print STDERR "$str";
+        $str =~ s|^|** SLICE:Verbose: |mg;
+        print STDERR $str;
     }
 }
 
 sub error {
     my ($str) = @_;
 
-    print STDERR "slice ERROR: $str";
+    $str =~ s|^|** SLICE:Error: |mg;
+    print STDERR $str;
     exit(1);
 }
 

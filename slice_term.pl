@@ -245,10 +245,10 @@ yyloop: while(1)
     $p->{'yym'} = $yylen[$p->{'yyn'}];
     $p->{'yyval'} = $p->{'yyvs'}->[$p->{'yyvsp'}+1-$p->{'yym'}];
 if ($p->{'yyn'} == 1) {
-{ $p->{'yyval'} = &newvar($p->{'yyvs'}->[$p->{'yyvsp'}-0]); push(@OUT, "my ".$p->{'yyval'}." = \$CFG->{SLICE}->{SET}->{OBJ}->{'".$p->{'yyvs'}->[$p->{'yyvsp'}-0]."'};"); }
+{ $p->{'yyval'} = &newvar($p->{'yyvs'}->[$p->{'yyvsp'}-0]); push(@OUT, "my ".$p->{'yyval'}." = \$CFG->{SLICE}->{SET}->{OBJ}->{'".$p->{'yyvs'}->[$p->{'yyvsp'}-0]."'}->Clone;"); }
 }
 if ($p->{'yyn'} == 2) {
-{ $p->{'yyval'} = &newvar($p->{'yyvs'}->[$p->{'yyvsp'}-1]); push(@OUT, "my ".$p->{'yyval'}." = \$CFG->{SLICE}->{SET}->{OBJ}->{'NOV_".$p->{'yyvs'}->[$p->{'yyvsp'}-1]."'};"); }
+{ $p->{'yyval'} = &newvar($p->{'yyvs'}->[$p->{'yyvsp'}-1]); push(@OUT, "my ".$p->{'yyval'}." = \$CFG->{SLICE}->{SET}->{OBJ}->{'NOV_".$p->{'yyvs'}->[$p->{'yyvsp'}-1]."'}->Clone;"); }
 }
 if ($p->{'yyn'} == 3) {
 { $p->{'yyval'} = $p->{'yyvs'}->[$p->{'yyvsp'}-0]; push(@OUT, $p->{'yyvs'}->[$p->{'yyvsp'}-0]."->Complement(".$p->{'yyvs'}->[$p->{'yyvsp'}-0].");"); }

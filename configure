@@ -649,7 +649,7 @@ echo "configure:648: checking for Perl interpreter" >&5
 if test "${with_perl+set}" = set; then
   withval="$with_perl"
   ac_perlprog=$with_perl
-ac_perlvers=`$perlprog -v | grep version | sed -e 's/.* version //' -e 's/ with.*//'`
+ac_perlvers=`$perlprog -v | grep version | sed -e 's/.* version //' -e 's/ built.*//' -e 's/ with.*//'`
 
 else
   TMPFILE=/tmp/ac.$$
@@ -659,11 +659,13 @@ c=0
 for dir in `echo $PATH | sed -e 's/:/ /g'` /tmp; do
     for perl in perl5 perl miniperl; do
          if test -f "$dir/$perl"; then
-             perl="$dir/$perl"
-             version=`$perl -v | grep version | sed -e 's/.* version //' -e 's/ with.*//'`
-             versionnum="`echo $version | sed -e 's/\.//g' -e 's/_//g'`"
-             versionnum=`expr $versionnum - $c`
-             echo "$versionnum $version $perl" >>$TMPFILE
+             if test -x "$dir/$perl"; then
+                 perl="$dir/$perl"
+                 version=`$perl -v | grep version | sed -e 's/.* version //' -e 's/ built.*//' -e 's/ with.*//'`
+                 versionnum="`echo $version | sed -e 's/\.//g' -e 's/_//g'`"
+                 versionnum=`expr $versionnum - $c`
+                 echo "$versionnum $version $perl" >>$TMPFILE
+             fi
          fi
     done
     c=`expr $c + 1`
@@ -685,7 +687,7 @@ PATH_PERL=$ac_perlprog
 
 
 echo $ac_n "checking for MakeMaker's private install paths""... $ac_c" 1>&6
-echo "configure:689: checking for MakeMaker's private install paths" >&5
+echo "configure:691: checking for MakeMaker's private install paths" >&5
 TMPDIR=/tmp/ac.$$
 rm -rf $TMPDIR 2>/dev/null
 mkdir $TMPDIR
@@ -728,16 +730,16 @@ have_bitvector=0
 have_io=0
 
 fi
-echo $ac_n "checking for Perl module Getopt::Long (2.10)""... $ac_c" 1>&6
-echo "configure:733: checking for Perl module Getopt::Long (2.10)" >&5
+echo $ac_n "checking for Perl module Getopt::Long (2.12)""... $ac_c" 1>&6
+echo "configure:735: checking for Perl module Getopt::Long (2.12)" >&5
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE 2>&1 >/dev/null
 cat >$TMPFILE <<'EOT'
 eval {
     require Getopt::Long;
-	if ('2.10' ne 'ANY') {
+	if ('2.12' ne 'ANY') {
 		$is   = $Getopt::Long::VERSION || '';
-		$want = '2.10';
+		$want = '2.12';
 	    $is     =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    $want   =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    die if (not $is or ($want > $is));
@@ -764,16 +766,16 @@ else
 fi
 
 
-echo $ac_n "checking for Perl module Bit::Vector (4.2)""... $ac_c" 1>&6
-echo "configure:769: checking for Perl module Bit::Vector (4.2)" >&5
+echo $ac_n "checking for Perl module Bit::Vector (5.0)""... $ac_c" 1>&6
+echo "configure:771: checking for Perl module Bit::Vector (5.0)" >&5
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE 2>&1 >/dev/null
 cat >$TMPFILE <<'EOT'
 eval {
     require Bit::Vector;
-	if ('4.2' ne 'ANY') {
+	if ('5.0' ne 'ANY') {
 		$is   = $Bit::Vector::VERSION || '';
-		$want = '4.2';
+		$want = '5.0';
 	    $is     =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    $want   =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    die if (not $is or ($want > $is));
@@ -800,16 +802,16 @@ else
 fi
 
 
-echo $ac_n "checking for Perl module IO::File (1.06)""... $ac_c" 1>&6
-echo "configure:805: checking for Perl module IO::File (1.06)" >&5
+echo $ac_n "checking for Perl module IO::File (1.07)""... $ac_c" 1>&6
+echo "configure:807: checking for Perl module IO::File (1.07)" >&5
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE 2>&1 >/dev/null
 cat >$TMPFILE <<'EOT'
 eval {
     require IO::File;
-	if ('1.06' ne 'ANY') {
+	if ('1.07' ne 'ANY') {
 		$is   = $IO::File::VERSION || '';
-		$want = '1.06';
+		$want = '1.07';
 	    $is     =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    $want   =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    die if (not $is or ($want > $is));

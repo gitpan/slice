@@ -1,12 +1,5 @@
 
-This is additional software from other authors which is required by SLICE.
-It is provided as is.
-
-getoptlong/ 
-    GetoptLong-2.6 from Johan Vromans
-    http://www.perl.com/CPAN/modules/by-module/Getopt/GetoptLong-2.6.tar.gz
-
-bitvector/ 
-    Bit-Vector-4.1 from Steffen Beyer
-    http://www.perl.com/CPAN/authors/id/STBEY/Bit-Vector-4.1.tar.gz
+ getoptlong/ ........ GetoptLong-2.12 from Johan Vromans
+ bitvector/ .... .... Bit-Vector-5.0b1 from Steffen Beyer
+ io/ ................ IO-1.1801 from Graham Barr
 

@@ -45,7 +45,7 @@ sub pass1 {
 
     $INPUT = $CFG->{INPUT}->{SRC};
     $pos   = 0;
-	$open  = 0;
+    $open  = 0;
     while (1) {
         # search for begin delimiter
         $found1 = (($prolog1, $name1, $epilog1) = 
@@ -117,10 +117,10 @@ sub pass1 {
     #   check: were all opened slices really closed?
     if ($CURRENT_LEVEL_SET->Norm > 0) {
         print STDERR "ERROR: Some slices were not closed: ";
-		my $i;
+        my $i;
         for ($i = 0; $i <= $CURRENT_LEVEL_SET->Max(); $i++) {
             if ($CURRENT_LEVEL_SET->bit_test($i)) {
-				my $name;
+                my $name;
                 foreach $name (keys(%CURRENT_LEVEL_BRAIN)) {
                     if ($CURRENT_LEVEL_BRAIN{$name} == ($i+1)) {
                         print STDERR "`$name' ";

@@ -36,10 +36,10 @@ require "slice_boot.pl";
 ##                                www.engelschall.com
 
 
-use Getopt::Long 2.10;
+use Getopt::Long 2.12;
 use IO::Handle 1.15;
-use IO::File 1.06;
-use Bit::Vector 4.2;
+use IO::File 1.07;
+use Bit::Vector 5.0;
 
 require "slice_vers.pl";
 require "slice_util.pl";
@@ -56,5 +56,6 @@ $CFG = {};
 &pass3($CFG);
 
 exit(0);
+
 
 ##EOF##

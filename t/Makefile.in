@@ -5,7 +5,7 @@
 @SET_MAKE@
 
 test:
-	../slice -x -o "ENuUNDEF:file.html.en" -o "DEuUNDEF:file.html.de" file.in
+	../slice -v -o "ENuUNDEF:file.html.en" -o "DEuUNDEF:file.html.de" file.in
 	@cmp file.html.en.OK file.html.en || echo "FAILED"
 	@cmp file.html.de.OK file.html.de || echo "FAILED"
 	@echo "OK"

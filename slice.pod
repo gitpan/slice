@@ -10,19 +10,23 @@ B<slice>
 [B<-o> I<sliceterm>:I<outputfile>[@I<chmodcmd>] ..]
 [I<inputfile>]
 
+B<slice>
+[B<-V>]
+[B<-h>]
+
 =head1 DESCRIPTION
 
 =head2 Input Principle
 
-The F<slice> program reads I<inputfile> (or from C<STDIN> if I<inputfile> is
-not given or equal ``C<->'') and divides its already prepaired ASCII contents
+The F<slice> program reads I<inputfile> (or from F<STDIN> if I<inputfile> is
+not given or equal ``C<->'') and divides its already prepared ASCII contents
 into possibly overlapping areas, called I<slices>.   These slices are
 determined by enclosing blocks defined by begin and end delimiters which have
 to be I<already> in the file. These block delimiters use the syntax
 
   [NAME: ... :NAME]
 
-or alternatively (if there is no mis-interpretation possible, i.e. no
+or alternatively (if there is no misinterpretation possible, i.e. no
 overlapping or stacked slices)
 
   [NAME: ... :]
@@ -168,19 +172,23 @@ output to more than one file while the corresponding I<sliceterm> determines
 which output data will be included into each output file. 
 
 The optional I<chmodcmd> string is intended for specifying options for the
-C<chmod> command, which is applied to I<outputfile> after writing. For
+F<chmod> command, which is applied to I<outputfile> after writing. For
 instance use ``C<a+r>'' to make sure the file is readable by a webserver of
 ``C<u+x>'' to create a file with the execution bit set (usually used for SSI
-files on a webserver with the XBitHack option available).
+files on a webserver with the C<XBitHack> option available).
 
-=item B<-x>
+=item B<-v>
 
 This sets verbose mode where some processing information will be given on the
 console for debugging purpose.
 
-=item B<-v>
+=item B<-V>
 
 Displays the version identification string.
+
+=item B<-h>
+
+Displays the usage page.
 
 =back
 

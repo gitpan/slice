@@ -28,9 +28,9 @@ have_getoptlong=0
 have_bitvector=0
 have_io=0
 ],)dnl
-AC_CHECK_PERL_MODULE(Getopt::Long, 2.10, getoptlong)
-AC_CHECK_PERL_MODULE(Bit::Vector, 4.2, bitvector)
-AC_CHECK_PERL_MODULE(IO::File, 1.06, io)
+AC_CHECK_PERL_MODULE(Getopt::Long, 2.12, getoptlong)
+AC_CHECK_PERL_MODULE(Bit::Vector, 5.0, bitvector)
+AC_CHECK_PERL_MODULE(IO::File, 1.07, io)
 
 AC_OUTPUT(dnl
 Makefile dnl

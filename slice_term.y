@@ -17,9 +17,9 @@ package SliceTermParser;
 %right '!' '~' 
 
 %%
-expr:   SLICE           { $$ = &newvar($1); push(@OUT, "my ".$$." = \$CFG->{SLICE}->{SET}->{OBJ}->{'".$1."'};"); }
+expr:   SLICE           { $$ = &newvar($1); push(@OUT, "my ".$$." = \$CFG->{SLICE}->{SET}->{OBJ}->{'".$1."'}->Clone;"); }
 
-    |   SLICE '@'       { $$ = &newvar($1); push(@OUT, "my ".$$." = \$CFG->{SLICE}->{SET}->{OBJ}->{'NOV_".$1."'};"); }
+    |   SLICE '@'       { $$ = &newvar($1); push(@OUT, "my ".$$." = \$CFG->{SLICE}->{SET}->{OBJ}->{'NOV_".$1."'}->Clone;"); }
 
     |   '!' expr        { $$ = $2; push(@OUT, $2."->Complement(".$2.");"); }
     |   '~' expr        { $$ = $2; push(@OUT, $2."->Complement(".$2.");"); }

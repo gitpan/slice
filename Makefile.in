@@ -74,7 +74,7 @@ configure: configure.in
 #   THE PROGRAM
 # ------------------------------------------------
 
-slice: slice_main.pl slice_term.pl slice_util.pl \
+slice: slice_boot.pl slice_main.pl slice_term.pl slice_util.pl \
        slice_setup.pl slice_pass1.pl slice_pass2.pl slice_pass3.pl
 	./etc/expand slice_main.pl |\
 	sed -e "s|\@path_perl\@|$(PATH_PERL)|" -e '/@(#)/d' -e '/^;#/d' \

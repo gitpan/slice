@@ -431,7 +431,7 @@ AC_MSG_CHECKING([for Perl interpreter])
 AC_ARG_WITH(perl,dnl
 [  --with-perl             force the usage of a specific installed Perl],
 ac_perlprog=$with_perl
-ac_perlvers=`$perlprog -v | grep version | sed -e 's/.* version //' -e 's/ with.*//'`
+ac_perlvers=`$perlprog -v | grep version | sed -e 's/.* version //' -e 's/ built.*//' -e 's/ with.*//'`
 ,
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
@@ -440,11 +440,13 @@ c=0
 for dir in `echo $PATH | sed -e 's/:/ /g'` /tmp; do
     for perl in perl5 perl miniperl; do
          if test -f "$dir/$perl"; then
-             perl="$dir/$perl"
-             version=`$perl -v | grep version | sed -e 's/.* version //' -e 's/ with.*//'`
-             versionnum="`echo $version | sed -e 's/\.//g' -e 's/_//g'`"
-             versionnum=`expr $versionnum - $c`
-             echo "$versionnum $version $perl" >>$TMPFILE
+             if test -x "$dir/$perl"; then
+                 perl="$dir/$perl"
+                 version=`$perl -v | grep version | sed -e 's/.* version //' -e 's/ built.*//' -e 's/ with.*//'`
+                 versionnum="`echo $version | sed -e 's/\.//g' -e 's/_//g'`"
+                 versionnum=`expr $versionnum - $c`
+                 echo "$versionnum $version $perl" >>$TMPFILE
+             fi
          fi
     done
     c=`expr $c + 1`

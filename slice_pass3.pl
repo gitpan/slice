@@ -62,9 +62,11 @@ sub pass3 {
             if ($CFG->{OPT}->{X}) {
                 &verbose("        calculated Perl 5 set term:\n");
                 &verbose("        ----\n");
-                my $x = $cmds; $x =~ s|\n|\n        |g;
-                &verbose("        $x");
-                &verbose("----\n");
+                my $x = $cmds; 
+                $x =~ s|\n+$||;
+                $x =~ s|\n|\n        |g;
+                &verbose("        $x\n");
+                &verbose("        ----\n");
             }
     
             #   now evaluate the Bit::Vector statements

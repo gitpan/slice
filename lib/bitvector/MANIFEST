@@ -3,6 +3,7 @@ BitVector.h
 Definitions.h
 MANIFEST
 Makefile.PL
+README
 Vector.pm
 Vector.xs
 typemap

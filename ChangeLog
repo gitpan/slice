@@ -7,118 +7,126 @@
   ChangeLog
   _________________________________________________________________
 
-  Changes between 1.2.3 and 1.2.4
-  -------------------------------
+  Changes between 1.2.7 and 1.2.8
+      971212 - disabled Perl warnings 
+             - fixed lib/00README file
+             - fixed destroyed COPYING file
+             - adjusted ChangeLog file to WML format
+             - added longoptions to usage page
+             - changed -v to -V option
+             - changed -x to -v option
+             - added -h option
 
-  970819 o upgraded to Getopt::Long 2.10
-         o let slice accept empty input files without 
-           complaining it
-         o added RESTRICTION section to slice.pod to make it
-           clear that anon end delimiters can lead to problems.
+  Changes between 1.2.6 and 1.2.7
+      971127 - upgraded to Bit::Vector 5.0b1
+
+  Changes between 1.2.5 and 1.2.6
+      971014 - upgraded to Getopt::Long 2.12
+      971112 - upgraded to IO 1.1801
+             - fixed nasty bug when some slices are used more
+               then once (for different output files but one with
+               a negation).  [Thanks to Sebastian Wilhelmi for
+               hint <wilhelmi@ira.uka.de>]
+             - fixed Debug output
+             - fixed Perl interpreter determination because of
+               Perl 5.004_04 where -v output changed.
+
+  Changes between 1.2.4 and 1.2.5
+      970828 - slightly changes the verbose and error messages
+             - slightly fixed slice.pod
+
+  Changes between 1.2.3 and 1.2.4
+      970819 - upgraded to Getopt::Long 2.10
+             - let slice accept empty input files without
+               complaining it
+             - added RESTRICTION section to slice.pod to make it
+               clear that anon end delimiters can lead to
+               problems.
 
   Changes between 1.2.2 and 1.2.3
-  -------------------------------
-
-  970815 o made it workable under Perl 5.003 again
-         o removed perl -c check in Makefile.in
-         o fixed distclean target
-         o fixed lib/Makefile.in
-         o fixed lib/getoptlong/Makefile.PL
-         o fixed lib/io/Makefile.PL
-         o disabled $Getopt::Long::getopt_compat option
+      970815 - made it workable under Perl 5.003 again
+             - removed perl -c check in Makefile.in
+             - fixed distclean target
+             - fixed lib/Makefile.in
+             - fixed lib/getoptlong/Makefile.PL
+             - fixed lib/io/Makefile.PL
+             - disabled $Getopt::Long::getopt_compat option
 
   Changes between 1.2.1 and 1.2.2
-  -------------------------------
-
-  970814 o improved the %!slice support [Thanks to Andrew Pimlott
-           <pimlott@abel.MATH.HARVARD.EDU> for providing the patch]
-         o overhauled the ChangeLog file format ;-)
+      970814 - improved the %!slice support [Thanks to Andrew
+               Pimlott <pimlott@abel.MATH.HARVARD.EDU> for
+               providing the patch]
+             - overhauled the ChangeLog file format ;-)
 
   Changes between 1.2.0 and 1.2.1
-  -------------------------------
-
-  970812 o Perl 5.004 not needed, 5.003 works too.
-         o added support for ``%!slice ...'' lines which can overwrite the
-           options from within the file
+      970812 - Perl 5.004 not needed, 5.003 works too.
+             - added support for ``%!slice ...'' lines which can
+               overwrite the options from within the file
 
   Changes between 1.1.1 and 1.2.0
-  -------------------------------
-
-  970715 o upgraded etc/newvers
-         o upgraded to Bit::Vector 4.2 module
-         o added --with-perl option to configure
-         o added IO package to lib/
-         o added etc/crunch
-         o added SLICE@ syntax (see slice.pod)
-  970805 o greatly overhauled and optimized the output generation
+      970715 - upgraded etc/newvers
+             - upgraded to Bit::Vector 4.2 module
+             - added --with-perl option to configure
+             - added IO package to lib/
+             - added etc/crunch
+             - added SLICE@ syntax (see slice.pod)
+      970805 - greatly overhauled and optimized the output
+               generation
 
   Changes between 1.1.0 and 1.1.1
-  -------------------------------
-
-  970523 o fixed problem with existing /tmp/x in configure, no /tmp/ac.$$
-         o fixed new-patchlevel target in Makefile.in
-         o added fixperm script and fixperm target
+      970523 - fixed problem with existing /tmp/x in configure,
+               no /tmp/ac.$$
+             - fixed new-patchlevel target in Makefile.in
+             - added fixperm script and fixperm target
 
   Changes between 1.0.7 and 1.1.0
-  -------------------------------
-
-  970423 o upgraded from Set::IntegerFast 3.2 to Bit::Vector 4.0 module
+      970423 - upgraded from Set::IntegerFast 3.2 to Bit::Vector
+               4.0 module
 
   Changes between 1.0.6 and 1.0.7
-  -------------------------------
-
-  970402 o again fixed MakeMaker install path determination.
-           in GNU autoconf again. Now it should really work correctly ;_)
+      970402 - again fixed MakeMaker install path determination.
+               in GNU autoconf again. Now it should really work
+               correctly ;_)
 
   Changes between 1.0.5 and 1.0.6
-  -------------------------------
-
-  970221 o fixed MakeMaker install path determination 
-           in GNU autoconf again. Now it should work correctly ;_)
+      970221 - fixed MakeMaker install path determination 
+               in GNU autoconf again. Now it should work
+               correctly ;_)
 
   Changes between 1.0.4 and 1.0.5
-  -------------------------------
-
-  970215 o changed COPYRIGHT header to LICENSE header in file LICENSE
-         o changed library hack with BEGIN to "use lib" variant
-         o made autoconf part for MakeMaker install paths more
-           robust, at least for Linux
-         o the slice.1 is pre-generated because pod2man is
-           broken on some Linux machines
-         o added MKDIR to Makefile.in's install target
+      970215 - changed COPYRIGHT header to LICENSE header in file
+               LICENSE
+             - changed library hack with BEGIN to "use lib"
+               variant
+             - made autoconf part for MakeMaker install paths
+               more robust, at least for Linux
+             - the slice.1 is pre-generated because pod2man is
+               broken on some Linux machines
+             - added MKDIR to Makefile.in's install target
 
   Changes between 1.0.3 and 1.0.4
-  -------------------------------
-   
-  970205 o fixed the lib/Makefile
-         o changed local() to my() where appropriate
-         o fixed a few bugs in slice.pod
-         o added "make update-version"
+      970205 - fixed the lib/Makefile
+             - changed local() to my() where appropriate
+             - fixed a few bugs in slice.pod
+             - added "make update-version"
 
   Changes between 1.0.2 and 1.0.3
-  -------------------------------
-   
-  970204 o updated to Steffen Beyers official Set::IntegerFast 3.0 
-           module from Set-IntegerFast-3.2 bundle.
+      970204 - updated to Steffen Beyers official
+               Set::IntegerFast 3.0 module from
+               Set-IntegerFast-3.2 bundle.
 
   Changes between 1.0.1 and 1.0.2
-  -------------------------------
-
-  970131 o fixed setting of empty sets where low = high+1
-         o added check for existing slice names
+      970131 - fixed setting of empty sets where low = high+1
+             - added check for existing slice names
 
   Changes between 1.0.0 and 1.0.1
-  -------------------------------
-
-  970131 o changed signature of rse
-         o used new Set::IntegerFast::Fill_Interval method
-         o used new Set::IntegerFast::Size method
-         o fixed "make clean" inside lib/
-         o fixed "configure" target in Makefile
-         o fixed "make clean" for t/
+      970131 - changed signature of rse
+             - used new Set::IntegerFast::Fill_Interval method
+             - used new Set::IntegerFast::Size method
+             - fixed "make clean" inside lib/
+             - fixed "configure" target in Makefile
+             - fixed "make clean" for t/
 
   Changes between *GENESIS* and 1.0.1
-  -----------------------------------
-
-  9701xx o *GENESIS*
+      9701xx - *GENESIS*
 

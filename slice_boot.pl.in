@@ -1,7 +1,10 @@
 
+# get rid of nasty warnings
+BEGIN { $^W = 0; }
+
 #   bootstrapping private installed modules
 use lib "@MM_INSTALLPRIVLIB@";
-use lib	"@MM_INSTALLARCHLIB@";
-use lib	"@MM_INSTALLSITELIB@";
-use lib	"@MM_INSTALLSITEARCH@";
+use lib "@MM_INSTALLARCHLIB@";
+use lib "@MM_INSTALLSITELIB@";
+use lib "@MM_INSTALLSITEARCH@";
 
