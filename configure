@@ -1,4 +1,6 @@
 #! /bin/sh
+# if we can run at the top, why should we stay at the bottom any longer?
+if [ ".$BASH" = . ]; then BASH=`which bash`; if [ ".$BASH" != . ]; then exec $BASH $0 $*; fi; fi
 
 # From configure.in Revision: 1.0
 # Guess values for system-dependent variables and create Makefiles.
@@ -630,8 +632,8 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 
-echo $ac_n "checking for (latest) Perl""... $ac_c" 1>&6
-echo "configure:635: checking for (latest) Perl" >&5
+echo $ac_n "checking for Perl interpreter""... $ac_c" 1>&6
+echo "configure:635: checking for Perl interpreter" >&5
 TMPFILE=/tmp/x
 rm -f $TMPFILE
 c=0
@@ -826,6 +828,8 @@ echo creating $CONFIG_STATUS
 rm -f $CONFIG_STATUS
 cat > $CONFIG_STATUS <<EOF
 #! /bin/sh
+# if we can run at the top, why should we stay at the bottom any longer?
+if [ ".$BASH" = . ]; then BASH=`which bash`; if [ ".$BASH" != . ]; then exec $BASH $0 $*; fi; fi
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,
@@ -855,7 +859,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile slice_boot.pl lib/Makefile etc/expand " | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "Makefile t/Makefile lib/Makefile slice_boot.pl etc/expand " | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -936,7 +940,7 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile slice_boot.pl lib/Makefile etc/expand "}
+CONFIG_FILES=\${CONFIG_FILES-"Makefile t/Makefile lib/Makefile slice_boot.pl etc/expand "}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

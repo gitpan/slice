@@ -1,0 +1,21 @@
+       _ _          
+   ___| (_) ___ ___ 
+  / __| | |/ __/ _ \
+  \__ \ | | (_|  __/
+  |___/_|_|\___\___|
+
+  CHANGES
+
+  1.0.0  9701xx
+
+      o *GENESIS*
+   
+  1.0.1  970131
+
+      o changed signature of rse
+      o used new Set::IntegerFast::Fill_Interval method
+      o used new Set::IntegerFast::Size method
+      o fixed "make clean" inside lib/
+	  o fixed "configure" target in Makefile
+	  o fixed "make clean" for t/
+

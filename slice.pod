@@ -235,9 +235,9 @@ developed to generate various HTML files from one source file.
 
 =head1 AUTHOR
 
- Ralf S. Engelschall
- rse@engelschall.com
- http://www.engelschall.com/
+  Ralf S. Engelschall
+  rse@engelschall.com
+  www.engelschall.com
 
 =cut
 

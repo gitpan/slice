@@ -196,7 +196,7 @@ sub SetClone {
     local($set) = @_;
     local($tmp);
 
-    $tmp = new Set::IntegerFast($MAXSETLEN);
+    $tmp = new Set::IntegerFast($set->Size());
     $tmp->Copy($set);
     return $tmp;
 }
@@ -226,9 +226,9 @@ for ($i = 1; $i <= $maxlevel; $i++) {
     $set->Complement($set);
     $SLICESET{"UNDEF$i"} = &SetClone($set);
 }
-$SLICESET{"DEF"} = &SetClone($setA);
+$SLICESET{'DEF'} = &SetClone($setA);
 $setA->Complement($setA);
-$SLICESET{"UNDEF"} = &SetClone($setA);
+$SLICESET{'UNDEF'} = &SetClone($setA);
 $SLICESET{'ALL'} = $SLICESET{'UNDEF0'};
 
 

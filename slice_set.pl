@@ -1,3 +1,7 @@
+##
+##  slice_set.pl -- Set manipulation
+##  Copyright (c) 1997 Ralf S. Engelschall, All Rights Reserved. 
+##
 
 #
 #  convert ASCII set representation string into internal set object
@@ -23,46 +27,9 @@ sub asc2set {
     foreach $interval (@I) {
         ($level, $from, $to) = ($interval =~ m|^(\d+):(\d+):(\d+)$|);
         next if (($onlylevel ne "") and ($level != $onlylevel)); 
-        for ($i = $from; $i <= $to; $i++) {
-            $set->Insert($i);
-        }
-		#$set->InsertRange($from, $to);
-    }
-}
-
-#
-#  convert internal set object into ASCII set representation string 
-#
-sub set2asc {
-    local($set, *asc) = @_;
-    local($inside, $i, $max, $min);
-
-    $asc = "";
-    $inside = 0;
-    $min = $set->Min();
-    $max = $set->Max();
-    for ($i = $min; $i <= $max; $i++) {
-        if ($set->in($i) and not $inside) {
-            #   start of interval
-            $asc .= ",0:$i";
-            $inside = 1;
-            next;
-        }
-        if (not $set->in($i) and $inside) {
-            #   end of interval
-            $asc .= ":" . sprintf("%d", $i-1);
-            $inside = 0;
-            next;
-        }
-    }
-    #   special case: the leading comma
-    $asc =~ s|^,||;
-
-    #   special case: a interval which reached the end
-    #   the above loop cannot determine this
-    if ($asc =~ m|[^:]*\d+:\d+$|) {
-        $asc .= ":" . $set->Max();
+        $set->Fill_Interval($from, $to);
     }
 }
 
 1;
+##EOF##

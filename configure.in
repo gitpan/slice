@@ -13,7 +13,7 @@ AC_SET_MAKE
 AC_PROG_INSTALL
 
 
-AC_MSG_CHECKING([for (latest) Perl])
+AC_MSG_CHECKING([for Perl interpreter])
 TMPFILE=/tmp/x
 rm -f $TMPFILE
 c=0
@@ -123,8 +123,9 @@ AC_SUBST(INSTALLSITEARCH)
 
 AC_OUTPUT(dnl
 Makefile dnl
-slice_boot.pl dnl
+t/Makefile dnl
 lib/Makefile dnl
+slice_boot.pl dnl
 etc/expand dnl
 ,dnl
 chmod a+x etc/expand

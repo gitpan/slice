@@ -58,8 +58,10 @@ install:
 	fi
 
 clean:
-	cd getoptlong; $(MAKE) clean;
-	cd setintegerfast; $(MAKE) clean;
+	cd getoptlong; $(MAKE) clean
+	-@mv getoptlong/Makefile.old getoptlong/Makefile 2>/dev/null
+	cd setintegerfast; $(MAKE) clean
+	-@mv setintegerfast/Makefile.old setintegerfast/Makefile 2>/dev/null
 
 distclean:
 	@$(MAKE) clean

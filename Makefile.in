@@ -24,6 +24,12 @@ bindir          = @bindir@
 libdir          = @libdir@
 mandir          = ${exec_prefix}/man
 
+#   Version Naming
+NEWVERS = \
+	./etc/newvers -l perl -p SLICE $$OPT slice_vers.pl; \
+	V=`./etc/newvers -l perl -D slice_vers.pl`;\
+	sed -e "s/Version .*(.*)/Version $$V/g" <README >README.n && mv README.n README
+
 # ------------------------------------------------
 #   THE DEFAULT TARGETS
 # ------------------------------------------------
@@ -39,7 +45,7 @@ config: configure
 configure: configure.in 
 	rm -f configure
 	autoconf configure.in >configure
-	./aux/fixconfigure configure
+	./etc/fixconfigure configure
 	chmod 770 configure
 
 # ------------------------------------------------
@@ -80,9 +86,11 @@ lib_subdir_install:
 
 lib_subdir_clean:
 	@cd lib; $(MAKE) clean
+	@cd t; $(MAKE) clean
 
 lib_subdir_distclean:
 	@cd lib; $(MAKE) distclean
+	@cd t; $(MAKE) distclean
 
 # ------------------------------------------------
 #   TEST SUITE
@@ -125,6 +133,18 @@ snap:
     echo "Snap of whole source tree: SLICE Version $$_version as of $$_date"; \
     $(_BUILDDIST)
 
+new-version:
+	OPT=-iv; $(NEWVERS)
+
+new-revision:
+	OPT=-ir; $(NEWVERS)
+
+new-patchlevel:
+	OPT=-ip; $(NEWVERS)
+
+new-release:
+	OPT=-r$(R); $(NEWVERS)
+
 # ------------------------------------------------
 #   INSTALLATION
 # ------------------------------------------------
@@ -145,16 +165,17 @@ clean:
 distclean: 
 	@$(MAKE) clean
 	@$(MAKE) lib_subdir_distclean
+	-rm -f slice.1 
 	-rm -f slice.1.ps
 	-rm -f slice.1.txt
 	-rm -f config.cache
 	-rm -f config.log
 	-rm -f config.status
 	-rm -f Makefile
+	-rm -f slice_boot.pl
 
 realclean: 
 	@$(MAKE) distclean
 	-rm -f slice_term.pl
-	-rm -f slice.1 
 
 ##EOF##
