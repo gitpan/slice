@@ -46,8 +46,13 @@
         broken on some Linux machines
       o added MKDIR to Makefile.in's install target
 
-   1.0.6 960221
+  1.0.6 970221
 
       o fixed MakeMaker install path determination 
         in GNU autoconf again. Now it should work correctly ;_)
+
+  1.0.7 970402
+
+      o again fixed MakeMaker install path determination.
+        in GNU autoconf again. Now it should really work correctly ;_)
 
