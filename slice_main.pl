@@ -36,7 +36,7 @@ require "slice_boot.pl";
 ##                                www.engelschall.com
 
 
-use Getopt::Long 2.06;
+use Getopt::Long 2.10;
 use IO::Handle 1.15;
 use IO::File 1.06;
 use Bit::Vector 4.2;

@@ -1,4 +1,0 @@
-
-- man sollte end name auch bei [A: [B: :A] :] zu B finden. Derzeit A
-- man sollte correct clearlevel aufrufen bei [A: [A: :] :] (NESTING!) 
-

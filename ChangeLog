@@ -7,6 +7,15 @@
   ChangeLog
   _________________________________________________________________
 
+  Changes between 1.2.3 and 1.2.4
+  -------------------------------
+
+  970819 o upgraded to Getopt::Long 2.10
+         o let slice accept empty input files without 
+           complaining it
+         o added RESTRICTION section to slice.pod to make it
+           clear that anon end delimiters can lead to problems.
+
   Changes between 1.2.2 and 1.2.3
   -------------------------------
 

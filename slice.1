@@ -93,7 +93,7 @@
 .nr % 0
 .rr F
 .\}
-.TH SLICE 1 "EN" "12/Aug/97" "Ralf S. Engelschall"
+.TH SLICE 1 "EN" "19/Aug/97" "Ralf S. Engelschall"
 .IX Title "SLICE 1"
 .UC
 .IX Name "Slice - Extract pre-defined slices from an ASCII file"
@@ -448,6 +448,27 @@ then creates the following to files:
 \&  ...Deutscher Text...
 \&  </body>
 \&  </html>
+.Ve
+.SH "RESTRICTION"
+.IX Header "RESTRICTION"
+The current implementation only handles anonymous end delimiters ``\f(CW:]\fR'\*(R'
+correct in clear cases where no mis-interpretation is possible, i.e. when no
+overlapping occurs. For instance in
+.PP
+.Vb 1
+\&   ...[A:...[B:...:A]...:]...
+.Ve
+the end delimiter is not correctly assign to the `B\*(R' slice. So, be careful
+when using anonymous end delimiters in overlapping situations. Pure stacking
+like
+.PP
+.Vb 1
+\&   ...[A:...[B:...:]...:]...
+.Ve
+is allowed and handled correctly, but only when you interpret this as
+.PP
+.Vb 1
+\&   ...[A:...[B:...:B]...:A]...
 .Ve
 .SH "AUTHOR"
 .IX Header "AUTHOR"

@@ -275,6 +275,24 @@ then creates the following to files:
 
 =back
 
+=head1 RESTRICTION
+
+The current implementation only handles anonymous end delimiters ``C<:]>''
+correct in clear cases where no mis-interpretation is possible, i.e. when no
+overlapping occurs. For instance in
+
+   ...[A:...[B:...:A]...:]...
+
+the end delimiter is not correctly assign to the `B' slice. So, be careful
+when using anonymous end delimiters in overlapping situations. Pure stacking
+like
+
+   ...[A:...[B:...:]...:]...
+
+is allowed and handled correctly, but only when you interpret this as
+
+   ...[A:...[B:...:B]...:A]...
+
 =head1 AUTHOR
 
   Ralf S. Engelschall

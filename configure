@@ -728,16 +728,16 @@ have_bitvector=0
 have_io=0
 
 fi
-echo $ac_n "checking for Perl module Getopt::Long (2.06)""... $ac_c" 1>&6
-echo "configure:733: checking for Perl module Getopt::Long (2.06)" >&5
+echo $ac_n "checking for Perl module Getopt::Long (2.10)""... $ac_c" 1>&6
+echo "configure:733: checking for Perl module Getopt::Long (2.10)" >&5
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE 2>&1 >/dev/null
 cat >$TMPFILE <<'EOT'
 eval {
     require Getopt::Long;
-	if ('2.06' ne 'ANY') {
+	if ('2.10' ne 'ANY') {
 		$is   = $Getopt::Long::VERSION || '';
-		$want = '2.06';
+		$want = '2.10';
 	    $is     =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    $want   =~ s|^(\d+).(\d+)$|$1 * 100 + $2|e;
 	    die if (not $is or ($want > $is));

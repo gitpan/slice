@@ -11,7 +11,7 @@
   1. Make sure you have Perl Version 5.003 or 5.004 already
      installed on your system.
 
-  2. Configure the package and create the binary:
+  2. Configure the package and create the script:
 
      $ ./configure --prefix=/usr/local
      $ make

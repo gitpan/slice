@@ -123,7 +123,7 @@ sub pass1 {
 				my $name;
                 foreach $name (keys(%CURRENT_LEVEL_BRAIN)) {
                     if ($CURRENT_LEVEL_BRAIN{$name} == ($i+1)) {
-                        print STDERR "<$name> ";
+                        print STDERR "`$name' ";
                     }
                 }
             }

@@ -52,37 +52,40 @@ sub pass3 {
             $out->open(">$outfile");
         }
 
-        #   parse the sliceterm and create corresponding
-        #   Perl 5 statement containing Bit::Vector calls
-        ($cmds, $var) = SliceTerm::Parse($slice);
-
-        #   just debugging...
-        if ($CFG->{OPT}->{X}) {
-            &verbose("        calculated Perl 5 set term:\n");
-            &verbose("        ----\n");
-            my $x = $cmds; $x =~ s|\n|\n        |g;
-            &verbose("        $x");
-            &verbose("----\n");
-        }
-
-        #   now evaluate the Bit::Vector statements
-        #   and move result to $set
-        eval "$cmds; \$set = $var";
-
-        #   now scan the set and write out characters
-        #   which have a corresponding bit set.
-        $start = 0;
-        while (($start < $set->Size()) &&
-               (($min, $max) = $set->Interval_Scan_inc($start))) {
-            $out->print(substr($CFG->{INPUT}->{PLAIN}, $min, ($max-$min+1)));
-            $start = $max + 2;
+        #   now when there is plain data cut out the slices
+        if (length($CFG->{INPUT}->{PLAIN}) > 0) {
+            #   parse the sliceterm and create corresponding
+            #   Perl 5 statement containing Bit::Vector calls
+            ($cmds, $var) = SliceTerm::Parse($slice);
+    
+            #   just debugging...
+            if ($CFG->{OPT}->{X}) {
+                &verbose("        calculated Perl 5 set term:\n");
+                &verbose("        ----\n");
+                my $x = $cmds; $x =~ s|\n|\n        |g;
+                &verbose("        $x");
+                &verbose("----\n");
+            }
+    
+            #   now evaluate the Bit::Vector statements
+            #   and move result to $set
+            eval "$cmds; \$set = $var";
+    
+            #   now scan the set and write out characters
+            #   which have a corresponding bit set.
+            $start = 0;
+            while (($start < $set->Size()) &&
+                   (($min, $max) = $set->Interval_Scan_inc($start))) {
+                $out->print(substr($CFG->{INPUT}->{PLAIN}, $min, ($max-$min+1)));
+                $start = $max + 2;
+            }
         }
 
         #   close outputfile
         $out->close;
 
         #   additionally run chmod on the output file
-        if ($outfile ne '-' and $chmod ne '') {
+        if ($outfile ne '-' and $chmod ne '' and -f $outfile) {
             system("chmod $chmod $outfile");
         }
     }

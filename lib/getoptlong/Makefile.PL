@@ -1,9 +1,10 @@
 
 use ExtUtils::MakeMaker;
 
-require "./GetoptLong.pm";
+require "./Long.pm";
 
 WriteMakefile(
 	VERSION   => $Getopt::Long::VERSION,
 	NAME      => "Getopt::Long",
 );
+
