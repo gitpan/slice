@@ -1,0 +1,70 @@
+##
+##  Makefile
+##
+
+# ------------------------------------------------
+#   DEFINITIONS
+# ------------------------------------------------
+
+@SET_MAKE@
+SHELL = /bin/sh
+
+top_srcdir      = @top_srcdir@
+srcdir          = @srcdir@
+VPATH           = @srcdir@
+
+PATH_PERL       = @path_perl@
+INSTALL         = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA    = @INSTALL_DATA@
+
+prefix          = @prefix@
+exec_prefix     = @exec_prefix@
+bindir          = @bindir@
+libdir          = @libdir@
+mandir          = ${exec_prefix}/man
+
+have_getoptlong     = @have_getoptlong@
+have_setintegerfast = @have_setintegerfast@
+
+# ------------------------------------------------
+#   TARGETS
+# ------------------------------------------------
+
+all:
+	@if [ $(have_getoptlong) = 0 ]; then \
+		if [ ! -f getoptlong/.configured ]; then \
+		    cd getoptlong; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+			touch .configured; \
+			cd ..; \
+		fi; \
+		cd getoptlong; $(MAKE); \
+	fi
+	@if [ $(have_setintegerfast) = 0 ]; then \
+		if [ ! -f setintegerfast/.configured ]; then \
+		    cd setintegerfast; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+			touch .configured; \
+			cd ..; \
+		fi; \
+		cd setintegerfast; $(MAKE); \
+	fi
+
+install:
+	@if [ $(have_getoptlong) = 0 ]; then \
+		cd getoptlong; $(MAKE) pure_install; \
+	fi
+	@if [ $(have_setintegerfast) = 0 ]; then \
+		cd setintegerfast; $(MAKE) pure_install; \
+	fi
+
+clean:
+	cd getoptlong; $(MAKE) clean;
+	cd setintegerfast; $(MAKE) clean;
+
+distclean:
+	@$(MAKE) clean
+	cd getoptlong; rm -f .configured Makefile.old;
+	cd setintegerfast; rm -f .configured Makefile.old;
+	-rm -f Makefile
+
+##EOF##

@@ -1,0 +1,35 @@
+       _ _          
+   ___| (_) ___ ___ 
+  / __| | |/ __/ _ \
+  \__ \ | | (_|  __/
+  |___/_|_|\___\___|
+                  
+  Slice -- Extract pre-defined slices of an ASCII file
+
+  INSTALLATION
+
+  1. The following packages have to be already 
+     installed on your system:
+
+     o  Perl Interpreter, Version 5.003
+     o  Perl Module: Set::IntegerFast, Version 3.1
+     o  Perl Module: Getopt::Long, Version 2.6
+
+     If you still don't have these packages you can
+     retrieve them from the following locations:
+    
+     http://www.perl.com/CPAN/src/5.0/perl5.003.tar.gz
+     http://www.perl.com/CPAN/modules/by-module/Set/Set-IntegerFast-3.1.tar.gz
+     http://www.perl.com/CPAN/modules/by-module/Getopt/GetoptLong-2.6.tar.gz
+
+     Please install them first!
+
+  2. Configure the package and create the binary:
+
+     $ ./configure --prefix=/usr/local
+     $ make
+
+  3. Install the binary and manualpage:
+
+     $ make install
+

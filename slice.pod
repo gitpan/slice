@@ -1,0 +1,243 @@
+
+=head1 NAME
+
+Slice -- Extract out pre-defined slices of an ASCII file
+
+=head1 SYNOPSIS
+
+B<slice>
+[B<-v>]
+[B<-o> I<sliceterm>:I<outputfile>[@I<chmodcmd>] ..]
+[I<inputfile>]
+
+=head1 DESCRIPTION
+
+=head2 Input Principle
+
+The F<slice> program reads I<inputfile> (or from C<stdin> if I<inputfile> is
+not specified or equal "-") and divide its prepaired ASCII contents into
+possibly overlapping slices. These slices are determined by enclosing blocks
+which are defined by begin and end delimiters which have to be already in the
+file.  These block delimiters use the syntax
+
+  [NAME: ... :NAME]
+
+or alternatively (if there is no mis-interpretation, i.e. no overlapping or
+stacked slices)
+
+  [NAME: ... :]
+
+There can as many such slice definitions as you like and there can be more
+than one slice with the same name. The resulting slice is the union of all
+equal named slices. Actually use this to spread a big slice over disjunct
+peaces of the file.
+
+=head2 Output Selection Scheme
+
+The final output gets calculated by a slice term consisting of slice names,
+set theory operators and optional round brackets. The following syntax is
+recognized (in order of grammar parsing) for slice terms:
+
+=over
+
+=item SLICE_TERM ::= C<!NAME> | C<~NAME>
+
+The complement of slice NAME (i.e. ALL\NAME).
+
+=item SLICE_TERM ::= C<NAME1nNAME2> | C<NAME1*NAME2>
+
+The intersection of slices NAME1 and slices NAME2.
+
+=item SLICE_TERM ::= C<NAME1xNAME2>, C<NAME1^NAME2>
+
+The exclusive or relation between slices NAME1 and slices NAME2.
+
+=item SLICE_TERM ::= C<NAME1uNAME2>, C<NAME1+NAME2>
+
+The union of slices NAME1 and slices NAME2.
+
+=item SLICE_TERM ::= C<NAME1\NAME2>, C<NAME1-NAME2>
+
+The difference of slices NAME1 minus slices NAME2.
+
+=item SLICE_TERM ::= C<(> SLICE_TERM C<)>
+
+A grouped slice term. Use this to force a different order of evaluation.
+
+=back
+
+=head2 Advanced Selection: Slice Levels
+
+Because slices can be overlapping or stacked, a definition level is assigned
+to each slice while the input is parsed. These levels range from 1 to the
+maximum encounted (the level 0 is the whole file).  When a slice begins it is
+assigned the lowest free level, beginning with level 1. As long as one level
+is in use, it cannot be assigned again until the end delimter of the
+corresponding slice is seen. 
+
+An example:
+
+     [A:[B::B]:A][C:[D:[E::C]:D][F::E]:F]
+
+  3                     E-----------E
+  2      B--B        D--------D 
+  1   A--------A  C--------C     F-----F
+  0 
+
+Here slice A is assigned level 1. Then B is assigned level 2 because level 1
+is still in use by A. Then the end of B is reached, level 2 is freed.  Then
+the end of A is reached and level 1 is also free now, so C is assigned level 1
+again. Now only level 1 is in use, so D is assigned level 2. Then E is
+assigned level 3. Then the end of C is seen and level 1 freed. Then the end of
+D is seen and level 2 is freed. Now F begins and because only level 3 is in
+use, it gets level 1 assigned. Then the end of E frees level 3 and the end of
+F frees level 1. Finally no levels are still in use. This indicates that the
+slicing is correct. If there are any used levels left at the end this
+indicates an error and F<slice> will print an error.
+
+This complicated level mechanism is needed for granular set operations where
+particular slices should be included or excluded only. To make life easier, a
+few pseudo-slices are automatically defined:
+
+=over
+
+=item C<DEFn>
+
+The union of all user-defined slices at exactly level n (0 <= n <= maxlevel).
+
+=item C<UNDEFn>
+
+The union of all not user-defined slices at exactly level n (0 <= n <=
+maxlevel).  Actually this is just C<!DEFn>.
+
+=item C<DEF>
+
+The union of all user-defined slices at B<all> levels, beginning at 1.
+Actually this is the union of all C<DEFn> slices.
+
+=item C<UNDEF>
+
+The union of all non-user-defined slices at all levels, beginning with 1.
+Actually this is just C<!DEF>.
+
+=item C<ALL>
+
+The whole file. This actually is just C<UNDEF0>, because at level 0 there are
+no user defined slices, so all is undefined.
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item [B<-o> I<sliceterm>:I<outputfile>[@I<chmodcmd>] ..]
+
+This redirects the output to a file. Usually the whole file will be send to
+C<stdout> (same as C<ALL:->). You can use this option I<more than once> to
+output to more than one file while the corresponding I<sliceterm> determines
+which contents will be included into each output file. 
+
+The optional I<chmodcmd> string is intended for specifying options for the
+C<chmod> command, which is applied to I<outputfile> after writing. For
+instance use ``C<u+x>'' to create a file with the execution bit set (usually
+used for SSI files on a webserver with the XBitHack option available).
+
+=item B<-v>
+
+This sets verbose mode where some processing information will be given on the
+console for debugging purpose.
+
+=back
+
+=head1 EXAMPLE
+
+Assume the following simple multi-language article file F<article.src>,
+written in HTML:
+
+  <html>
+  <head>
+  <title>[EN:Titlepage][DE:Titelseite]</title>
+  </head>
+  <body>
+
+  <center>
+  <h1>[EN:The Title itself][DE:Der Titel selbst]</h1>
+  </center>
+
+  <blockquote>
+  [EN:...English Abstract...]
+  [DE:...Deutsche Zusammenfassung...]
+  </blockquote>
+
+  [EN:...English Text...]
+  [DE:...Deutscher Text...]
+
+  </body>
+  </html>
+
+Then the command 
+
+  slice -o ENuUNDEF:article.html.en -o DEuUNDEF:article.html.de
+
+creates the following to files:
+
+=over
+
+=item F<article.html.en>:
+
+  <html>
+  <head>
+  <title>Titlepage</title>
+  </head>
+  <body>
+
+  <center>
+  <h1>The Title itself</h1>
+  </center>
+
+  <blockquote>
+  ...English Abstract...
+  </blockquote>
+
+  ...English Text...
+  </body>
+  </html>
+
+=item F<article.html.de>:
+
+  <html>
+  <head>
+  <title>Titelseite</title>
+  </head>
+  <body>
+
+  <center>
+  <h1>Der Titel selbst</h1>
+  </center>
+
+  <blockquote>
+  ...Deutsche Zusammenfassung...
+  </blockquote>
+
+  ...Deutscher Text...
+  </body>
+  </html>
+
+=back
+
+=head1 RESTRICTIONS
+
+The program is written in Perl and not C, so it is not as fast as it could be.
+But usually its feature is not needed under any fast runtime situation.
+Usually F<slice> is used for offline generation of data files. Actually it was
+developed to generate various HTML files from one source file.
+
+=head1 AUTHOR
+
+ Ralf S. Engelschall
+ rse@engelschall.com
+ http://www.engelschall.com/
+
+=cut
+

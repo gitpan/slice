@@ -1,0 +1,7 @@
+
+This is additional software from other authors which is required by SLICE.
+It is provided as is.
+
+getoptlong/ ........ GetoptLong-2.6 from Johan Vromans
+setintegerfast/ .... Set-IntegerFast-3.2 from Steffen Beyer
+

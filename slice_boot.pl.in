@@ -1,0 +1,11 @@
+
+#   bootstrapping private installed modules
+BEGIN { 
+    @INC = ( 
+	"@INSTALLPRIVLIB@",
+	"@INSTALLARCHLIB@",
+	"@INSTALLSITELIB@",
+	"@INSTALLSITEARCH@",
+	@INC );
+}
+

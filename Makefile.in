@@ -1,0 +1,160 @@
+##
+##  Makefile
+##
+
+# ------------------------------------------------
+#   DEFINITIONS
+# ------------------------------------------------
+
+@SET_MAKE@
+SHELL = /bin/sh
+
+top_srcdir      = @top_srcdir@
+srcdir          = @srcdir@
+VPATH           = @srcdir@
+
+PATH_PERL       = @path_perl@
+INSTALL         = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA    = @INSTALL_DATA@
+
+prefix          = @prefix@
+exec_prefix     = @exec_prefix@
+bindir          = @bindir@
+libdir          = @libdir@
+mandir          = ${exec_prefix}/man
+
+# ------------------------------------------------
+#   THE DEFAULT TARGETS
+# ------------------------------------------------
+
+all: slice slice.1 lib_subdir
+
+# ------------------------------------------------
+#   THE CONFIGURATION SUPPORT
+# ------------------------------------------------
+
+config: configure
+
+configure: configure.in 
+	rm -f configure
+	autoconf configure.in >configure
+	./aux/fixconfigure configure
+	chmod 770 configure
+
+# ------------------------------------------------
+#   THE PROGRAM
+# ------------------------------------------------
+
+slice: slice_main.pl slice_term.pl slice_util.pl slice_set.pl
+	./etc/expand slice_main.pl >slice.tmp
+	sed -e "s|\@path_perl\@|$(PATH_PERL)|" <slice.tmp >slice
+	chmod a+x slice
+	rm slice.tmp
+
+slice_term.pl: slice_term.y
+	pbyacc -l -P slice_term.y && mv y.tab.pl slice_term.pl
+
+# ------------------------------------------------
+#   THE DOCUMENTATION
+# ------------------------------------------------
+
+slice.1: slice.pod
+	pod2man --section=1 --center="EN Tools" --release="EN Tools" $> >$@
+
+slice.1.txt: slice.1
+	groff -Tascii -man slice.1 >slice.1.txt
+
+slice.1.ps: slice.1
+	groff -Tps -man slice.1 >slice.1.ps
+
+# ------------------------------------------------
+#   THE PERL LIBRARY FILES
+# ------------------------------------------------
+
+lib_subdir:
+	@cd lib; $(MAKE)
+
+lib_subdir_install:
+	@cd lib; $(MAKE) install
+
+lib_subdir_clean:
+	@cd lib; $(MAKE) clean
+
+lib_subdir_distclean:
+	@cd lib; $(MAKE) distclean
+
+# ------------------------------------------------
+#   TEST SUITE
+# ------------------------------------------------
+
+test: all
+	(cd t; make test)
+
+# ------------------------------------------------
+#   DISTRIBUTION
+# ------------------------------------------------
+
+_GETDISTINFO = \
+    _version=`$(top_srcdir)/etc/newvers -lperl -d slice_vers.pl`; \
+    _date=`date '+%y%m%d_%H%M'`;
+
+_BUILDDIST = \
+    _cwd=`pwd`; \
+    echo "Creating tarball..."; \
+    cd $(top_srcdir); \
+    tar cvf - * |\
+    tardy --user_number=1000  --user_name=rse \
+          --group_number=1000 --group_name=en \
+          --prefix=$${_distname} - |\
+    gzip >$${_tarball}; \
+    echo "Done"; \
+    cd $$_cwd; ls -l $${_tarball};
+
+release: distclean
+	@$(_GETDISTINFO) \
+    _distname="slice-$${_version}"; \
+    _tarball="../web/distrib/$${_distname}.tar.gz"; \
+    echo "Release Distribution: SLICE Version $$_version"; \
+    $(_BUILDDIST)
+
+snap: 
+	@$(_GETDISTINFO) \
+    _distname="slice-$${_version}-$${_date}-SNAP"; \
+    _tarball="../web/distrib/$${_distname}.tar.gz"; \
+    echo "Snap of whole source tree: SLICE Version $$_version as of $$_date"; \
+    $(_BUILDDIST)
+
+# ------------------------------------------------
+#   INSTALLATION
+# ------------------------------------------------
+
+install: all
+	$(INSTALL_PROGRAM) slice $(bindir)/slice
+	$(INSTALL_DATA) slice.1 $(mandir)/slice.1
+	@$(MAKE) lib_subdir_install
+
+# ------------------------------------------------
+#   CLEANUP
+# ------------------------------------------------
+
+clean: 
+	-rm -f slice
+	@$(MAKE) lib_subdir_clean
+
+distclean: 
+	@$(MAKE) clean
+	@$(MAKE) lib_subdir_distclean
+	-rm -f slice.1.ps
+	-rm -f slice.1.txt
+	-rm -f config.cache
+	-rm -f config.log
+	-rm -f config.status
+	-rm -f Makefile
+
+realclean: 
+	@$(MAKE) distclean
+	-rm -f slice_term.pl
+	-rm -f slice.1 
+
+##EOF##
