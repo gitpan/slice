@@ -1,11 +1,19 @@
 
 #   bootstrapping private installed modules
-BEGIN { 
-    @INC = ( 
-	"@INSTALLPRIVLIB@",
-	"@INSTALLARCHLIB@",
-	"@INSTALLSITELIB@",
-	"@INSTALLSITEARCH@",
-	@INC );
-}
+
+#   THE OLD METHOD
+#BEGIN { 
+#    @INC = ( 
+#	"@INSTALLPRIVLIB@",
+#	"@INSTALLARCHLIB@",
+#	"@INSTALLSITELIB@",
+#	"@INSTALLSITEARCH@",
+#	@INC );
+#}
+
+#   THE NEW METHOD
+use lib "@INSTALLPRIVLIB@";
+use lib	"@INSTALLARCHLIB@";
+use lib	"@INSTALLSITELIB@";
+use lib	"@INSTALLSITEARCH@";
 

@@ -90,9 +90,10 @@ AC_SUBST(have_setintegerfast)
 
 
 AC_MSG_CHECKING([for MakeMaker's private install paths])
-TMPFILE=/tmp/x
-rm -f $TMPFILE
-cat >$TMPFILE <<'EOT'
+TMPDIR=/tmp/ac
+rm -rf $TMPDIR 2>/dev/null
+mkdir $TMPDIR
+cat >$TMPDIR/Makefile.PL <<'EOT'
 use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'		=> 'Dummy::Dummy',
@@ -111,10 +112,14 @@ EOT
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
 eval "dir=$libdir"
-eval "$path_perl $TMPFILE PREFIX=$dir/perl_private >/dev/null 2>/dev/null"
+(
+cd $TMPDIR
+eval "$path_perl Makefile.PL PREFIX=$dir/perl_private >/dev/null 2>/dev/null"
 for line in `make dummy | grep ^INSTALL`; do
 	eval $line;
 done
+)
+rm -rf $TMPDIR 2>/dev/null
 AC_MSG_RESULT([ok])
 AC_SUBST(INSTALLPRIVLIB)
 AC_SUBST(INSTALLARCHLIB)

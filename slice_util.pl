@@ -4,14 +4,16 @@
 ##
 
 sub verbose {
-    local($str) = @_;
+    my ($str) = @_;
+
     if ($opt_x) {
         print STDERR "$str";
     }
 }
 
 sub error {
-    local($str) = @_;
+    my ($str) = @_;
+
     print STDERR "slice ERROR: $str";
     exit(1);
 }

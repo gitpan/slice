@@ -113,7 +113,7 @@ $LEVELS = new Set::IntegerFast(100);
 $maxlevel = 0;
 
 sub alloclevel {
-    local($i);
+    my ($i);
 
     for ($i = 0; $i < 100; $i++) {
         last if (not $LEVELS->in($i));
@@ -121,8 +121,10 @@ sub alloclevel {
     $LEVELS->Insert($i);
     return $i + 1;
 }
+
 sub clearlevel {
-    local($level) = @_;
+    my ($level) = @_;
+
     $LEVELS->Delete($level - 1);
 }
 
@@ -193,8 +195,8 @@ $set  = new Set::IntegerFast($MAXSETLEN);
 $setA = new Set::IntegerFast($MAXSETLEN);
 
 sub SetClone {
-    local($set) = @_;
-    local($tmp);
+    my ($set) = @_;
+    my ($tmp);
 
     $tmp = new Set::IntegerFast($set->Size());
     $tmp->Copy($set);
@@ -205,7 +207,7 @@ sub SetClone {
 foreach $slice (keys(%SLICE)) {
     $asc = $SLICE{$slice};
     $set->Empty();
-    &asc2set($asc, \$set);
+    &asc2set($asc, $set);
     $SLICESET{$slice} = &SetClone($set);
 }
 
@@ -219,8 +221,8 @@ for ($i = 1; $i <= $maxlevel; $i++) {
     $set->Empty();
     foreach $name (keys(%SLICE)) {
         $asc = $SLICE{$name};
-        &asc2set($asc, \$set, $i, 1); # load $set with entries of level $i
-        $setA->Union($setA, $set);    # add to $setA these entries
+        &asc2set($asc, $set, $i, 1); # load $set with entries of level $i
+        $setA->Union($setA, $set);   # add to $setA these entries
     }
     $SLICESET{"DEF$i"} = &SetClone($set);
     $set->Complement($set);
@@ -240,7 +242,7 @@ $SLICESET{'ALL'} = $SLICESET{'UNDEF0'};
 &verbose("\nPass 3: Output generation\n\n");
 
 sub WriteOutput {
-    local($infile, *IN, $slice, $outfile, *OUT, $chmod) = @_;
+    local ($infile, *IN, $slice, $outfile, *OUT, $chmod) = @_;
 
     ($cmds, $var) = SliceTerm::Parse($slice);
 

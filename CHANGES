@@ -29,3 +29,20 @@
       o updated to Steffen Beyers official Set::IntegerFast 3.0 
         module from Set-IntegerFast-3.2 bundle.
 
+  1.0.4 970205
+
+      o fixed the lib/Makefile
+      o changed local() to my() where appropriate
+      o fixed a few bugs in slice.pod
+      o added "make update-version"
+
+  1.0.5 9702xx
+
+      o changed COPYRIGHT header to LICENSE header in file LICENSE
+      o changed library hack with BEGIN to "use lib" variant
+      o made autoconf part for MakeMaker install paths more
+        robust, at least for Linux
+      o the slice.1 is pre-generated because pod2man is
+        broken on some Linux machines
+      o added MKDIR to Makefile.in's install target
+

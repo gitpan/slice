@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-Slice -- Extract out pre-defined slices of an ASCII file
+Slice -- Extract pre-defined slices from an ASCII file
 
 =head1 SYNOPSIS
 
@@ -15,10 +15,10 @@ B<slice>
 =head2 Input Principle
 
 The F<slice> program reads I<inputfile> (or from C<stdin> if I<inputfile> is
-not specified or equal "-") and divide its prepaired ASCII contents into
-possibly overlapping slices. These slices are determined by enclosing blocks
-which are defined by begin and end delimiters which have to be already in the
-file.  These block delimiters use the syntax
+not given or equal "-") and divides its prepaired ASCII contents into possibly
+overlapping areas, called slices.   These slices are determined by enclosing
+blocks defined by begin and end delimiters which have to be already in the
+file. These block delimiters use the syntax
 
   [NAME: ... :NAME]
 
@@ -27,16 +27,16 @@ stacked slices)
 
   [NAME: ... :]
 
-There can as many such slice definitions as you like and there can be more
+There can be as many such slice definitions as you like and there can be more
 than one slice with the same name. The resulting slice is the union of all
 equal named slices. Actually use this to spread a big slice over disjunct
 peaces of the file.
 
 =head2 Output Selection Scheme
 
-The final output gets calculated by a slice term consisting of slice names,
-set theory operators and optional round brackets. The following syntax is
-recognized (in order of grammar parsing) for slice terms:
+The final output data gets calculated by a slice term consisting of slice
+names and set theory operators. The following syntax is recognized (in order
+of grammar parsing) for slice terms:
 
 =over
 
@@ -46,19 +46,19 @@ The complement of slice NAME (i.e. ALL\NAME).
 
 =item SLICE_TERM ::= C<NAME1nNAME2> | C<NAME1*NAME2>
 
-The intersection of slices NAME1 and slices NAME2.
+The intersection of slice NAME1 and slice NAME2.
 
 =item SLICE_TERM ::= C<NAME1xNAME2>, C<NAME1^NAME2>
 
-The exclusive or relation between slices NAME1 and slices NAME2.
+The exclusive or relation between slice NAME1 and slice NAME2.
 
 =item SLICE_TERM ::= C<NAME1uNAME2>, C<NAME1+NAME2>
 
-The union of slices NAME1 and slices NAME2.
+The union of slice NAME1 and slice NAME2.
 
 =item SLICE_TERM ::= C<NAME1\NAME2>, C<NAME1-NAME2>
 
-The difference of slices NAME1 minus slices NAME2.
+The difference of slice NAME1 minus slice NAME2.
 
 =item SLICE_TERM ::= C<(> SLICE_TERM C<)>
 
@@ -72,7 +72,7 @@ Because slices can be overlapping or stacked, a definition level is assigned
 to each slice while the input is parsed. These levels range from 1 to the
 maximum encounted (the level 0 is the whole file).  When a slice begins it is
 assigned the lowest free level, beginning with level 1. As long as one level
-is in use, it cannot be assigned again until the end delimter of the
+is in use, it cannot be assigned again until the end delimiter of the
 corresponding slice is seen. 
 
 An example:
@@ -92,8 +92,9 @@ assigned level 3. Then the end of C is seen and level 1 freed. Then the end of
 D is seen and level 2 is freed. Now F begins and because only level 3 is in
 use, it gets level 1 assigned. Then the end of E frees level 3 and the end of
 F frees level 1. Finally no levels are still in use. This indicates that the
-slicing is correct. If there are any used levels left at the end this
-indicates an error and F<slice> will print an error.
+slicing is correct. If there are any used levels left at the end of this
+processing this indicates an input error and F<slice> will respond with an
+error message.
 
 This complicated level mechanism is needed for granular set operations where
 particular slices should be included or excluded only. To make life easier, a
@@ -136,7 +137,7 @@ no user defined slices, so all is undefined.
 This redirects the output to a file. Usually the whole file will be send to
 C<stdout> (same as C<ALL:->). You can use this option I<more than once> to
 output to more than one file while the corresponding I<sliceterm> determines
-which contents will be included into each output file. 
+which output data will be included into each output file. 
 
 The optional I<chmodcmd> string is intended for specifying options for the
 C<chmod> command, which is applied to I<outputfile> after writing. For
@@ -228,10 +229,11 @@ creates the following to files:
 
 =head1 RESTRICTIONS
 
-The program is written in Perl and not C, so it is not as fast as it could be.
-But usually its feature is not needed under any fast runtime situation.
-Usually F<slice> is used for offline generation of data files. Actually it was
-developed to generate various HTML files from one source file.
+The program is implemented in the Perl 5 interpreter language and not in C, so
+it is not as fast as it could be under runtime.  But usually its feature is
+not needed under any fast runtime situation.  Usually F<slice> is used for
+offline generation of data files. Actually it was developed to generate
+various HTML files from one source file.
 
 =head1 AUTHOR
 

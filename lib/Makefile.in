@@ -65,8 +65,8 @@ clean:
 
 distclean:
 	@$(MAKE) clean
-	cd getoptlong; rm -f .configured Makefile.old;
-	cd setintegerfast; rm -f .configured Makefile.old;
+	cd getoptlong; rm -f .configured Makefile.old Makefile
+	cd setintegerfast; rm -f .configured Makefile.old Makefile
 	-rm -f Makefile
 
 ##EOF##
