@@ -56,6 +56,8 @@
       o again fixed MakeMaker install path determination.
         in GNU autoconf again. Now it should really work correctly ;_)
 
+  -----------------------------------------------------------------------
+
   1.1.0 970423
 
       o upgraded from Set::IntegerFast 3.2 to Bit::Vector 4.0 module
@@ -65,4 +67,16 @@
       o fixed problem with existing /tmp/x in configure, no /tmp/ac.$$
       o fixed new-patchlevel target in Makefile.in
       o added fixperm script and fixperm target
+
+  -----------------------------------------------------------------------
+
+  1.2.0 970715
+
+      o upgraded etc/newvers
+      o upgraded to Bit::Vector 4.2 module
+      o added --with-perl option to configure
+      o added IO package to lib/
+      o added etc/crunch
+      o added SLICE@ syntax (see slice.pod)
+      o overhauled and optimized the output generation
 

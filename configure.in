@@ -14,6 +14,11 @@ AC_PROG_INSTALL
 
 
 AC_MSG_CHECKING([for Perl interpreter])
+AC_ARG_WITH(perl,dnl
+[  --with-perl=PATH        force the usage of a specific installed Perl],
+perlprog=$with_perl
+perlvers=`$perlprog -v | grep version | sed -e 's/.* version //' -e 's/ with.*//'`
+,
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 c=0
@@ -32,12 +37,13 @@ done
 perlvers="`cat $TMPFILE | sort -u | tail -1 | cut '-d ' -f2`"
 perlprog="`cat $TMPFILE | sort -u | tail -1 | cut '-d ' -f3`"
 rm -f $TMPFILE
+)dnl
 path_perl=$perlprog
 AC_MSG_RESULT([$perlprog v$perlvers])
 AC_SUBST(path_perl)
 
 
-AC_MSG_CHECKING([for Perl module Getopt::Long])
+AC_MSG_CHECKING([for Perl module Getopt::Long 2.06])
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
@@ -63,13 +69,13 @@ fi
 AC_SUBST(have_getoptlong)
 
 
-AC_MSG_CHECKING([for Perl module Bit::Vector])
+AC_MSG_CHECKING([for Perl module Bit::Vector 4.2])
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
     require Bit::Vector;
-    Bit::Vector->require_version('4.0');
+    Bit::Vector->require_version('4.2');
 };
 if ($@) {
     print "failed";
@@ -87,6 +93,32 @@ else
     AC_MSG_RESULT([not found - will use private version])
 fi
 AC_SUBST(have_bitvector)
+
+
+AC_MSG_CHECKING([for Perl module IO::File 1.06])
+TMPFILE=/tmp/ac.$$
+rm -f $TMPFILE
+cat >$TMPFILE <<'EOT'
+eval {
+    require IO::File;
+    IO::File->require_version('1.06');
+};
+if ($@) {
+    print "failed";
+} else {
+    print "ok";
+}
+EOT
+rc=`$path_perl $TMPFILE`; 
+rm -f $TMPFILE
+if test ".$rc" = .ok; then
+	have_io=1
+    AC_MSG_RESULT([found - will use installed version])
+else
+    have_io=0
+    AC_MSG_RESULT([not found - will use private version])
+fi
+AC_SUBST(have_io)
 
 
 AC_MSG_CHECKING([for MakeMaker's private install paths])
@@ -129,8 +161,10 @@ t/Makefile dnl
 lib/Makefile dnl
 slice_boot.pl dnl
 etc/expand dnl
+etc/crunch dnl
 ,dnl
 chmod a+x etc/expand
+chmod a+x etc/crunch
 )dnl
 
 dnl ##EOF##

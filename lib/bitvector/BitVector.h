@@ -14,10 +14,6 @@
 /*  MODULE INTERFACE:                                                        */
 /*****************************************************************************/
 
-/* #define ENABLE_BOUNDS_CHECKING here to do bounds checking! */
-
-#define ENABLE_BOUNDS_CHECKING
-
 unit    BitVector_Auto_Config(void);                 /* 0 = ok, 1..5 = error */
 
 unit    BitVector_Size    (N_int elements); /* bit vector size (# of units)  */
@@ -46,6 +42,9 @@ boolean BitVector_bit_flip(unitptr addr, N_int index);  /* X=(X+{x})\(X*{x}) */
 
 boolean BitVector_bit_test(unitptr addr, N_int index);      /* {x} in X ?    */
 
+boolean BitVector_is_empty(unitptr addr);                   /* X == {} ?     */
+boolean BitVector_is_full (unitptr addr);                   /* X == ~{} ?    */
+
 boolean BitVector_equal   (unitptr X, unitptr Y);           /* X == Y ?      */
 boolean BitVector_lexorder(unitptr X, unitptr Y);           /* X <= Y ?      */
 Z_int   BitVector_Compare (unitptr X, unitptr Y);           /* X <,=,> Y ?   */
@@ -56,6 +55,15 @@ boolean BitVector_rotate_left (unitptr addr);
 boolean BitVector_rotate_right(unitptr addr);
 boolean BitVector_shift_left  (unitptr addr, boolean carry_in);
 boolean BitVector_shift_right (unitptr addr, boolean carry_in);
+
+void    BitVector_Word_Insert (unitptr addr, unit words);
+void    BitVector_Word_Delete (unitptr addr, unit words);
+
+void    BitVector_Move_Left   (unitptr addr, N_int bits);
+void    BitVector_Move_Right  (unitptr addr, N_int bits);
+
+boolean BitVector_increment   (unitptr addr);               /* X++           */
+boolean BitVector_decrement   (unitptr addr);               /* X--           */
 
 baseptr BitVector_to_String   (unitptr addr);
 void    BitVector_Dispose     (baseptr string);
@@ -182,7 +190,7 @@ void    Matrix_Closure       (unitptr addr, unit rows, unit cols);
 /*****************************************************************************/
 /*  AUTHOR:  Steffen Beyer                                                   */
 /*****************************************************************************/
-/*  VERSION:  4.0                                                            */
+/*  VERSION:  4.2                                                            */
 /*****************************************************************************/
 /*  VERSION HISTORY:                                                         */
 /*****************************************************************************/
@@ -196,6 +204,8 @@ void    Matrix_Closure       (unitptr addr, unit rows, unit cols);
 /*    21.01.97    Version 3.1                                                */
 /*    04.02.97    Version 3.2                                                */
 /*    14.04.97    Version 4.0                                                */
+/*    30.06.97    Version 4.1  added word-ins/del, move-left/right, inc/dec  */
+/*    16.07.97    Version 4.2  added is_empty, is_full                       */
 /*****************************************************************************/
 /*  COPYRIGHT (C) 1989-1997 BY:  Steffen Beyer                               */
 /*****************************************************************************/

@@ -14,51 +14,68 @@ B<slice>
 
 =head2 Input Principle
 
-The F<slice> program reads I<inputfile> (or from C<stdin> if I<inputfile> is
-not given or equal "-") and divides its prepaired ASCII contents into possibly
-overlapping areas, called slices.   These slices are determined by enclosing
-blocks defined by begin and end delimiters which have to be already in the
-file. These block delimiters use the syntax
+The F<slice> program reads I<inputfile> (or from C<STDIN> if I<inputfile> is
+not given or equal ``C<->'') and divides its already prepaired ASCII contents
+into possibly overlapping areas, called I<slices>.   These slices are
+determined by enclosing blocks defined by begin and end delimiters which have
+to be I<already> in the file. These block delimiters use the syntax
 
   [NAME: ... :NAME]
 
-or alternatively (if there is no mis-interpretation, i.e. no overlapping or
-stacked slices)
+or alternatively (if there is no mis-interpretation possible, i.e. no
+overlapping or stacked slices)
 
   [NAME: ... :]
 
 There can be as many such slice definitions as you like and there can be more
 than one slice with the same name. The resulting slice is the union of all
 equal named slices. Actually use this to spread a big slice over disjunct
-peaces of the file.
+peaces of I<inputfile>.
 
 =head2 Output Selection Scheme
 
 The final output data gets calculated by a slice term consisting of slice
 names and set theory operators. The following syntax is recognized (in order
-of grammar parsing) for slice terms:
+of LR(1) grammar parsing) for slice terms:
 
 =over
 
+=item SLICE_TERM ::= C<NAME>
+
+The slice NAME itself.
+
 =item SLICE_TERM ::= C<!NAME> | C<~NAME>
 
-The complement of slice NAME (i.e. ALL\NAME).
+The B<complement> of slice NAME (i.e. ALL\NAME). 
 
-=item SLICE_TERM ::= C<NAME1nNAME2> | C<NAME1*NAME2>
-
-The intersection of slice NAME1 and slice NAME2.
+In formula: {x in ALL: x B<not> in NAME}
 
 =item SLICE_TERM ::= C<NAME1xNAME2>, C<NAME1^NAME2>
 
-The exclusive or relation between slice NAME1 and slice NAME2.
+The B<exclusive-or> relation between slice NAME1 and slice NAME2. In set theory
+also called B<symmetric difference>: (NAME1uNAME2)\(NAME1nNAME2) or alternatively
+(NAME1n!NAME2)u(!NAME1nNAME2). 
 
-=item SLICE_TERM ::= C<NAME1uNAME2>, C<NAME1+NAME2>
-
-The union of slice NAME1 and slice NAME2.
+In formula: {x in ALL: (x in NAME1 or x in NAME2) and not (x in NAME1 and x in
+NAME2)}.
 
 =item SLICE_TERM ::= C<NAME1\NAME2>, C<NAME1-NAME2>
 
-The difference of slice NAME1 minus slice NAME2.
+The B<difference> of slice NAME1 and slice NAME2, i.e. NAME1 minus NAME2.
+
+In formula: {x in ALL: x in NAME1 B<and> x B<not> in NAME2}
+
+=item SLICE_TERM ::= C<NAME1nNAME2> | C<NAME1*NAME2>
+
+The B<intersection> of slice NAME1 and slice NAME2.
+
+In formula: {x in ALL: x in NAME1 B<and> x in NAME2}
+
+=item SLICE_TERM ::= C<NAME1uNAME2>, C<NAME1+NAME2>
+
+The B<union> of slice NAME1 and slice NAME2.
+
+In formula: {x in ALL: x in NAME1 B<or> x in NAME2}
 
 =item SLICE_TERM ::= C<(> SLICE_TERM C<)>
 
@@ -68,12 +85,12 @@ A grouped slice term. Use this to force a different order of evaluation.
 
 =head2 Advanced Selection: Slice Levels
 
-Because slices can be overlapping or stacked, a definition level is assigned
+Because slices can be overlapping and stacked, a definition level is assigned
 to each slice while the input is parsed. These levels range from 1 to the
-maximum encounted (the level 0 is the whole file).  When a slice begins it is
-assigned the lowest free level, beginning with level 1. As long as one level
-is in use, it cannot be assigned again until the end delimiter of the
-corresponding slice is seen. 
+maximum encountered (the level 0 is the whole file, i.e. C<ALL>).  When a
+slice begins, it is assigned the lowest free level, beginning with level 1. As
+long as one level is in use, it cannot be assigned again until the end
+delimiter of the corresponding slice is seen. 
 
 An example:
 
@@ -92,39 +109,50 @@ assigned level 3. Then the end of C is seen and level 1 freed. Then the end of
 D is seen and level 2 is freed. Now F begins and because only level 3 is in
 use, it gets level 1 assigned. Then the end of E frees level 3 and the end of
 F frees level 1. Finally no levels are still in use. This indicates that the
-slicing is correct. If there are any used levels left at the end of this
-processing this indicates an input error and F<slice> will respond with an
-error message.
+slicing is correct. 
+
+If there are any used levels left at the end of this process this indicates an
+input error and F<slice> responds with an error message displaying the still
+open slices.
 
 This complicated level mechanism is needed for granular set operations where
-particular slices should be included or excluded only. To make life easier, a
-few pseudo-slices are automatically defined:
+particular slices should be included or excluded only. So, to make life
+easier, a few pseudo-slices are automatically defined:
 
 =over
 
 =item C<DEFn>
 
-The union of all user-defined slices at exactly level n (0 <= n <= maxlevel).
+The union of all user-defined slices at exactly level n (0 <= n <= oo).
 
 =item C<UNDEFn>
 
-The union of all not user-defined slices at exactly level n (0 <= n <=
-maxlevel).  Actually this is just C<!DEFn>.
+The union of all B<non>-user-defined slices at exactly level n (0 <= n <= oo).
+This actually is just C<!DEFn>.
 
 =item C<DEF>
 
-The union of all user-defined slices at B<all> levels, beginning at 1.
-Actually this is the union of all C<DEFn> slices.
+The union of all user-defined slices at B<all> levels, beginning at level
+B<1>.  This actually is the union of all C<DEFn> slices.
 
 =item C<UNDEF>
 
-The union of all non-user-defined slices at all levels, beginning with 1.
-Actually this is just C<!DEF>.
+The union of all B<non>-user-defined slices at B<all> levels, beginning with
+B<1>. This actually is just C<!DEF>.
 
 =item C<ALL>
 
 The whole file. This actually is just C<UNDEF0>, because at level 0 there are
 no user defined slices, so all is undefined.
+
+=item I<NAME>C<@>
+
+This is the slice I<NAME> minus the union of all C<DEFn> slices with min(NAME)
+<= n <= oo. Here min(NAME) is the the lowest level plus one where I<NAME> ever
+occurred.  You can read this as ``NAME without all other slices at higher
+levels which overwrite it''. B<This sounds a little bit crazy, but actually is
+the most important construct. Try to understand it or your slice terms become
+very complicated>.
 
 =back
 
@@ -135,19 +163,24 @@ no user defined slices, so all is undefined.
 =item [B<-o> I<sliceterm>:I<outputfile>[@I<chmodcmd>] ..]
 
 This redirects the output to a file. Usually the whole file will be send to
-C<stdout> (same as C<ALL:->). You can use this option I<more than once> to
+C<STDOUT> (same as C<ALL:->). You can use this option I<more than once> to
 output to more than one file while the corresponding I<sliceterm> determines
 which output data will be included into each output file. 
 
 The optional I<chmodcmd> string is intended for specifying options for the
 C<chmod> command, which is applied to I<outputfile> after writing. For
-instance use ``C<u+x>'' to create a file with the execution bit set (usually
-used for SSI files on a webserver with the XBitHack option available).
+instance use ``C<a+r>'' to make sure the file is readable by a webserver of
+``C<u+x>'' to create a file with the execution bit set (usually used for SSI
+files on a webserver with the XBitHack option available).
 
-=item B<-v>
+=item B<-x>
 
 This sets verbose mode where some processing information will be given on the
 console for debugging purpose.
+
+=item B<-v>
+
+Displays the version identification string.
 
 =back
 
@@ -177,11 +210,11 @@ written in HTML:
   </body>
   </html>
 
-Then the command 
+The command 
 
   slice -o ENuUNDEF:article.html.en -o DEuUNDEF:article.html.de
 
-creates the following to files:
+then creates the following to files:
 
 =over
 
@@ -226,14 +259,6 @@ creates the following to files:
   </html>
 
 =back
-
-=head1 RESTRICTIONS
-
-The program is implemented in the Perl 5 interpreter language and not in C, so
-it is not as fast as it could be under runtime.  But usually its feature is
-not needed under any fast runtime situation.  Usually F<slice> is used for
-offline generation of data files. Actually it was developed to generate
-various HTML files from one source file.
 
 =head1 AUTHOR
 

@@ -3,10 +3,12 @@
 ##  Copyright (c) 1997 Ralf S. Engelschall, All Rights Reserved. 
 ##
 
+package main;
+
 sub verbose {
     my ($str) = @_;
 
-    if ($opt_x) {
+    if ($main::CFG->{OPT}->{X}) {
         print STDERR "$str";
     }
 }

@@ -8,8 +8,8 @@
 ##           used as a version display tool in "./configire" steps...
 ##
 
-VERSION="2.1.3"
-   DATE="10-05-1997"
+VERSION="2.2.2"
+   DATE="02-06-1997"
 
 #   print version information line
 print_version () {
@@ -49,20 +49,60 @@ EOT
 }
 
 #   process the argument line
-LANG=unknown
+LANGUAGE=unknown
 PROGNAME="-UNKNOWN-"
 VERSION=unknown
 REPORT=NO
 REPORTFULL=NO
 INCREASE=P
-set -- `getopt l:p:r:i:dDVh $*`
+
+#   fallback if "getopt" is not available on system
+getopt=getopt
+eval "$getopt" >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    rm -f /tmp/getopt.c >/dev/null 2>&1
+    cat >/tmp/getopt.c <<EOT
+#include <stdio.h>
+main(argc, argv)
+int argc;
+char *argv[];
+{
+    extern int optind;
+    extern char *optarg;
+    int c;
+    int status = 0;
+    optind = 2; /* Past the program name and the option letters. */
+    while ((c = getopt(argc, argv, argv[1])) != EOF)
+        switch (c) {
+        case '?':
+            status = 1; /* getopt routine gave message */
+            break;
+        default:
+            if (optarg != NULL)
+                printf(" -%c %s", c, optarg);
+            else
+                printf(" -%c", c);
+            break;
+        }
+    printf(" --");
+    for (; optind < argc; optind++)
+        printf(" %s", argv[optind]);
+    printf("\n");
+    exit(status);
+}
+EOT
+        cc -o /tmp/getopt /tmp/getopt.c
+    getopt=/tmp/getopt
+fi
+set -- `$getopt l:p:r:i:dDVh $*`
 if [ $? != 0 ]; then
     print_usage
     exit 2
 fi
+rm -f /tmp/getopt >/dev/null 2>&1
 for opt in $*; do
     case $opt in
-        -l)  LANG=$2;          shift; shift  ;;
+        -l)  LANGUAGE=$2;      shift; shift  ;;
         -p)  PROGNAME=$2;      shift; shift  ;;
         -r)  VERSION=$2;       shift; shift  ;;
         -i)  INCREASE=$2;      shift; shift  ;;
@@ -79,12 +119,12 @@ case $# in
 esac
 
 #   determine language
-if [ "$LANG" = "unknown" ]; then
+if [ "$LANGUAGE" = "unknown" ]; then
     case $VERSIONFILE in
-        *.txt )       LANG=txt  ;;
-        *.c )         LANG=c    ;;
-        *.pl | *.pm ) LANG=perl ;;
-		* )           echo "Unkown language type"; exit 1 ;;
+        *.txt )       LANGUAGE=txt  ;;
+        *.c )         LANGUAGE=c    ;;
+        *.pl | *.pm ) LANGUAGE=perl ;;
+        * )           echo "Unkown language type"; exit 1 ;;
     esac
 fi
 
@@ -105,23 +145,23 @@ if [ "$VERSION" = "unknown" ]; then
             case $INCREASE in
                 b )
                     bplevel=`expr $bplevel + 1`
-					bptype=b
+                    bptype=b
                     ;;
                 a )
                     bplevel=`expr $bplevel + 1`
-					bptype=a
+                    bptype=a
                     ;;
                 s )
                     bplevel=`expr $bplevel + 1`
-					bptype=s
+                    bptype=s
                     ;;
                 P )
                     bplevel=`expr $bplevel + 1`
-					bptype=.
+                    bptype=.
                     ;;
                 p )
                     bplevel=`expr $bplevel + 1`
-					bptype=p
+                    bptype=p
                     ;;
                 r ) 
                     revision=`expr $revision + 1`
@@ -173,7 +213,7 @@ day=`date '+%d'`
 #   create the version file according the the selected language  
 tmpfile="/tmp/newvers.tmp.$$"
 rm -f $tmpfile
-case $LANG in
+case $LANGUAGE in
     txt )
         cat >$tmpfile <<'EOF'
 

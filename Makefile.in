@@ -1,5 +1,5 @@
 ##
-##  Makefile
+##  Makefile -- SLICE Makefile
 ##
 
 # ------------------------------------------------
@@ -25,16 +25,32 @@ bindir          = @bindir@
 libdir          = @libdir@
 mandir          = ${exec_prefix}/man
 
-#   Version Naming
 NEWVERS = \
 	./etc/newvers -l perl -p SLICE $$OPT slice_vers.pl; \
 	V=`./etc/newvers -l perl -D slice_vers.pl`;\
 	sed -e "s/Version .*(.*)/Version $$V/g" <README >README.n && mv README.n README
+
 UPDATEVERS = \
 	V=`./etc/newvers -l perl -d slice_vers.pl`;\
 	./etc/newvers -l perl -p SLICE -r $$V slice_vers.pl; \
 	V=`./etc/newvers -l perl -D slice_vers.pl`;\
 	sed -e "s/Version .*(.*)/Version $$V/g" <README >README.n && mv README.n README
+
+_GETDISTINFO = \
+    _version=`$(top_srcdir)/etc/newvers -lperl -d slice_vers.pl`; \
+    _date=`date '+%y%m%d_%H%M'`;
+
+_BUILDDIST = \
+    _cwd=`pwd`; \
+    echo "Creating tarball..."; \
+    cd $(top_srcdir); \
+    gtar --no-recursion -cvf - `find * -depth -print | sort` |\
+    tardy --user_number=1000  --user_name=rse \
+          --group_number=1000 --group_name=en \
+          --prefix=$${_distname} - |\
+    gzip >$${_tarball}; \
+    echo "Done"; \
+    cd $$_cwd; ls -l $${_tarball};
 
 # ------------------------------------------------
 #   THE DEFAULT TARGETS
@@ -58,21 +74,27 @@ configure: configure.in
 #   THE PROGRAM
 # ------------------------------------------------
 
-slice: slice_main.pl slice_term.pl slice_util.pl slice_set.pl
-	./etc/expand slice_main.pl >slice.tmp
-	sed -e "s|\@path_perl\@|$(PATH_PERL)|" <slice.tmp >slice
+slice: slice_main.pl slice_term.pl slice_util.pl \
+       slice_pass1.pl slice_pass2.pl slice_pass3.pl
+	./etc/expand slice_main.pl |\
+	./etc/crunch README |\
+	sed -e "s|\@path_perl\@|$(PATH_PERL)|" -e '/@(#)/d' -e '/^;#/d' \
+	>slice
 	chmod a+x slice
-	rm slice.tmp
+	$(PATH_PERL) -c slice
 
 slice_term.pl: slice_term.y
-	pbyacc -l -P slice_term.y && mv y.tab.pl slice_term.pl
+	pbyacc -l -P slice_term.y
+	sed -e "s/\'@\'/\'\\\@\'/g" <y.tab.pl >slice_term.pl
+	rm y.tab.pl
+
 
 # ------------------------------------------------
 #   THE DOCUMENTATION
 # ------------------------------------------------
 
 slice.1: slice.pod
-	pod2man --section=1 --center="EN Tools" --release="EN Tools" $> >$@
+	pod2man --section=1 --center="Ralf S. Engelschall" --release="EN" $> >$@
 
 slice.1.txt: slice.1
 	groff -Tascii -man slice.1 >slice.1.txt
@@ -108,22 +130,6 @@ test: all
 # ------------------------------------------------
 #   DISTRIBUTION
 # ------------------------------------------------
-
-_GETDISTINFO = \
-    _version=`$(top_srcdir)/etc/newvers -lperl -d slice_vers.pl`; \
-    _date=`date '+%y%m%d_%H%M'`;
-
-_BUILDDIST = \
-    _cwd=`pwd`; \
-    echo "Creating tarball..."; \
-    cd $(top_srcdir); \
-    tar cvf - * |\
-    tardy --user_number=1000  --user_name=rse \
-          --group_number=1000 --group_name=en \
-          --prefix=$${_distname} - |\
-    gzip >$${_tarball}; \
-    echo "Done"; \
-    cd $$_cwd; ls -l $${_tarball};
 
 release: distclean fixperm
 	@$(_GETDISTINFO) \

@@ -26,6 +26,7 @@ mandir          = ${exec_prefix}/man
 
 have_getoptlong = @have_getoptlong@
 have_bitvector  = @have_bitvector@
+have_io         = @have_bitvector@
 
 # ------------------------------------------------
 #   TARGETS
@@ -48,25 +49,45 @@ all:
 		fi; \
 		cd bitvector; $(MAKE); \
 	fi
+	@if [ $(have_io) = 0 ]; then \
+		if [ ! -f io/.configured ]; then \
+		    cd io; $(PATH_PERL) Makefile.PL PREFIX=@libdir@/perl_private; \
+			touch .configured; \
+			cd ..; \
+		fi; \
+		cd io; $(MAKE); \
+	fi
 
 install:
-	@if [ $(have_getoptlong) = 0 ]; then \
+	-@if [ $(have_getoptlong) = 0 ]; then \
 		cd getoptlong; $(MAKE) pure_install; \
 	fi
-	@if [ $(have_bitvector) = 0 ]; then \
+	-@if [ $(have_bitvector) = 0 ]; then \
 		cd bitvector; $(MAKE) pure_install; \
+	fi
+	-@if [ $(have_io) = 0 ]; then \
+		cd io; $(MAKE) pure_install; \
 	fi
 
 clean:
-	cd getoptlong; $(MAKE) clean
-	-@mv getoptlong/Makefile.old getoptlong/Makefile 2>/dev/null
-	cd bitvector; $(MAKE) clean
-	-@mv bitvector/Makefile.old bitvector/Makefile 2>/dev/null
+	-@if [ $(have_getoptlong) = 0 ]; then \
+		cd getoptlong; $(MAKE) clean; \
+		mv getoptlong/Makefile.old getoptlong/Makefile 2>/dev/null; \
+	fi
+	-@if [ $(have_bitvector) = 0 ]; then \
+		cd bitvector; $(MAKE) clean; \
+		mv bitvector/Makefile.old bitvector/Makefile 2>/dev/null; \
+	fi
+	-@if [ $(have_io) = 0 ]; then \
+		cd io; $(MAKE) clean; \
+		mv io/Makefile.old io/Makefile 2>/dev/null; \
+	fi
 
 distclean:
 	@$(MAKE) clean
 	cd getoptlong; rm -f .configured Makefile.old Makefile
 	cd bitvector; rm -f .configured Makefile.old Makefile
+	cd io; rm -f .configured Makefile.old Makefile
 	-rm -f Makefile
 
 ##EOF##

@@ -13,6 +13,8 @@ ac_help=
 ac_default_prefix=/usr/local
 # Any additions from configure.in:
 ac_default_prefix=/usr/local
+ac_help="$ac_help
+  --with-perl=PATH        force the usage of a specific installed Perl"
 
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
@@ -542,7 +544,7 @@ ac_configure=$ac_aux_dir/configure # This should be Cygnus configure.
 
 
 echo $ac_n "checking whether ${MAKE-make} sets \${MAKE}""... $ac_c" 1>&6
-echo "configure:546: checking whether ${MAKE-make} sets \${MAKE}" >&5
+echo "configure:548: checking whether ${MAKE-make} sets \${MAKE}" >&5
 set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_prog_make_${ac_make}_set'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -579,7 +581,7 @@ fi
 # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
 # ./install, which can be erroneously created by make from ./install.sh.
 echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
-echo "configure:583: checking for a BSD compatible install" >&5
+echo "configure:585: checking for a BSD compatible install" >&5
 if test -z "$INSTALL"; then
 if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -631,8 +633,15 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 echo $ac_n "checking for Perl interpreter""... $ac_c" 1>&6
-echo "configure:635: checking for Perl interpreter" >&5
-TMPFILE=/tmp/ac.$$
+echo "configure:637: checking for Perl interpreter" >&5
+# Check whether --with-perl or --without-perl was given.
+if test "${with_perl+set}" = set; then
+  withval="$with_perl"
+  perlprog=$with_perl
+perlvers=`$perlprog -v | grep version | sed -e 's/.* version //' -e 's/ with.*//'`
+
+else
+  TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 c=0
 for dir in `echo $PATH | sed -e 's/:/ /g'`; do
@@ -650,13 +659,15 @@ done
 perlvers="`cat $TMPFILE | sort -u | tail -1 | cut '-d ' -f2`"
 perlprog="`cat $TMPFILE | sort -u | tail -1 | cut '-d ' -f3`"
 rm -f $TMPFILE
+
+fi
 path_perl=$perlprog
 echo "$ac_t""$perlprog v$perlvers" 1>&6
 
 
 
-echo $ac_n "checking for Perl module Getopt::Long""... $ac_c" 1>&6
-echo "configure:660: checking for Perl module Getopt::Long" >&5
+echo $ac_n "checking for Perl module Getopt::Long 2.06""... $ac_c" 1>&6
+echo "configure:671: checking for Perl module Getopt::Long 2.06" >&5
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
@@ -682,14 +693,14 @@ fi
 
 
 
-echo $ac_n "checking for Perl module Bit::Vector""... $ac_c" 1>&6
-echo "configure:687: checking for Perl module Bit::Vector" >&5
+echo $ac_n "checking for Perl module Bit::Vector 4.2""... $ac_c" 1>&6
+echo "configure:698: checking for Perl module Bit::Vector 4.2" >&5
 TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
     require Bit::Vector;
-    Bit::Vector->require_version('4.0');
+    Bit::Vector->require_version('4.2');
 };
 if ($@) {
     print "failed";
@@ -709,8 +720,35 @@ fi
 
 
 
+echo $ac_n "checking for Perl module IO::File 1.06""... $ac_c" 1>&6
+echo "configure:725: checking for Perl module IO::File 1.06" >&5
+TMPFILE=/tmp/ac.$$
+rm -f $TMPFILE
+cat >$TMPFILE <<'EOT'
+eval {
+    require IO::File;
+    IO::File->require_version('1.06');
+};
+if ($@) {
+    print "failed";
+} else {
+    print "ok";
+}
+EOT
+rc=`$path_perl $TMPFILE`; 
+rm -f $TMPFILE
+if test ".$rc" = .ok; then
+	have_io=1
+    echo "$ac_t""found - will use installed version" 1>&6
+else
+    have_io=0
+    echo "$ac_t""not found - will use private version" 1>&6
+fi
+
+
+
 echo $ac_n "checking for MakeMaker's private install paths""... $ac_c" 1>&6
-echo "configure:714: checking for MakeMaker's private install paths" >&5
+echo "configure:752: checking for MakeMaker's private install paths" >&5
 TMPDIR=/tmp/ac.$$
 rm -rf $TMPDIR 2>/dev/null
 mkdir $TMPDIR
@@ -857,7 +895,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile t/Makefile lib/Makefile slice_boot.pl etc/expand " | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "Makefile t/Makefile lib/Makefile slice_boot.pl etc/expand etc/crunch " | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -893,6 +931,7 @@ s%@INSTALL_DATA@%$INSTALL_DATA%g
 s%@path_perl@%$path_perl%g
 s%@have_getoptlong@%$have_getoptlong%g
 s%@have_bitvector@%$have_bitvector%g
+s%@have_io@%$have_io%g
 s%@INSTALLPRIVLIB@%$INSTALLPRIVLIB%g
 s%@INSTALLARCHLIB@%$INSTALLARCHLIB%g
 s%@INSTALLSITELIB@%$INSTALLSITELIB%g
@@ -938,7 +977,7 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile t/Makefile lib/Makefile slice_boot.pl etc/expand "}
+CONFIG_FILES=\${CONFIG_FILES-"Makefile t/Makefile lib/Makefile slice_boot.pl etc/expand etc/crunch "}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then
@@ -1003,6 +1042,7 @@ cat >> $CONFIG_STATUS <<EOF
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 chmod a+x etc/expand
+chmod a+x etc/crunch
 
 exit 0
 EOF

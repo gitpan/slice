@@ -1,0 +1,11 @@
+IO.pm
+IO.xs
+IO/File.pm			(v1.06) File handle package
+IO/Handle.pm			(v1.14) Base handle package
+IO/Pipe.pm			(v1.08) Pipe package
+IO/Seekable.pm			(v1.06) Methods for Seekable handles
+IO/Select.pm			(v1.10) 
+IO/Socket.pm			(v1.15) Socket handle package
+MANIFEST
+Makefile.PL
+README

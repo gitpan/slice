@@ -17,22 +17,24 @@ package SliceTermParser;
 %right '!' '~' 
 
 %%
-expr:  SLICE            { $$ = &newvar($1); push(@OUT, $$." = \$SLICESET{'".$1."'};"); }
+expr:   SLICE           { $$ = &newvar($1); push(@OUT, "my ".$$." = \$CFG->{SLICE}->{SET}->{OBJ}->{'".$1."'};"); }
+
+    |   SLICE '@'       { $$ = &newvar($1); push(@OUT, "my ".$$." = \$CFG->{SLICE}->{SET}->{OBJ}->{'NOV_".$1."'};"); }
 
     |   '!' expr        { $$ = $2; push(@OUT, $2."->Complement(".$2.");"); }
     |   '~' expr        { $$ = $2; push(@OUT, $2."->Complement(".$2.");"); }
 
-    |   expr 'n' expr   { $$ = $1; push(@OUT, $1."->Intersection(".$1.",".$3.");"); }
-    |   expr '*' expr   { $$ = $1; push(@OUT, $1."->Intersection(".$1.",".$3.");"); }
-
     |   expr 'x' expr   { $$ = $1; push(@OUT, $1."->ExclusiveOr(".$1.",".$3.");"); }
     |   expr '^' expr   { $$ = $1; push(@OUT, $1."->ExclusiveOr(".$1.",".$3.");"); }
 
-    |   expr 'u' expr   { $$ = $1; push(@OUT, $1."->Union(".$1.",".$3.");"); }
-    |   expr '+' expr   { $$ = $1; push(@OUT, $1."->Union(".$1.",".$3.");"); }
-
     |   expr '\\' expr  { $$ = $1; push(@OUT, $1."->Difference(".$1.",".$3.");"); }
     |   expr '-' expr   { $$ = $1; push(@OUT, $1."->Difference(".$1.",".$3.");"); }
+
+    |   expr 'n' expr   { $$ = $1; push(@OUT, $1."->Intersection(".$1.",".$3.");"); }
+    |   expr '*' expr   { $$ = $1; push(@OUT, $1."->Intersection(".$1.",".$3.");"); }
+
+    |   expr 'u' expr   { $$ = $1; push(@OUT, $1."->Union(".$1.",".$3.");"); }
+    |   expr '+' expr   { $$ = $1; push(@OUT, $1."->Union(".$1.",".$3.");"); }
 
     |   '(' expr ')'    { $$ = $2; }
     ;
@@ -44,7 +46,7 @@ sub newvar {
     local($name) = @_;
     local($tmp);
 
-    if ($main::SLICESET{"$name"} eq "") {
+    if ($main::CFG->{SLICE}->{SET}->{OBJ}->{"$name"} eq '') {
         print STDERR "ERROR: no such slice '$name'\n";
         exit(1);
     }

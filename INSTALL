@@ -8,28 +8,15 @@
 
   INSTALLATION
 
-  1. The following packages have to be already 
-     installed on your system:
-
-     o  Perl Interpreter, Version 5.003
-     o  Perl Module: Bit::Vector, Version 4.0
-     o  Perl Module: Getopt::Long, Version 2.6
-
-     If you still don't have these packages you can
-     retrieve them from the following locations:
-    
-     http://www.perl.com/CPAN/src/5.0/perl5.003.tar.gz
-     http://www.perl.com/CPAN/authors/id/STBEY/Bit-Vector-4.0.tar.gz
-     http://www.perl.com/CPAN/modules/by-module/Getopt/GetoptLong-2.6.tar.gz
-
-     Please install them first!
+  1. Make sure you have Perl Version 5.003 or 5.004 already
+     installed on your system.
 
   2. Configure the package and create the binary:
 
      $ ./configure --prefix=/usr/local
      $ make
 
-  3. Install the binary and manualpage:
+  3. Install the binary and manual page:
 
      $ make install
 
