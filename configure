@@ -1,6 +1,4 @@
 #! /bin/sh
-# if we can run at the top, why should we stay at the bottom any longer?
-if [ ".$BASH" = . ]; then BASH=`which bash`; if [ ".$BASH" != . ]; then exec $BASH $0 $*; fi; fi
 
 # From configure.in Revision: 1.0
 # Guess values for system-dependent variables and create Makefiles.
@@ -634,7 +632,7 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 echo $ac_n "checking for Perl interpreter""... $ac_c" 1>&6
 echo "configure:635: checking for Perl interpreter" >&5
-TMPFILE=/tmp/x
+TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 c=0
 for dir in `echo $PATH | sed -e 's/:/ /g'`; do
@@ -659,7 +657,7 @@ echo "$ac_t""$perlprog v$perlvers" 1>&6
 
 echo $ac_n "checking for Perl module Getopt::Long""... $ac_c" 1>&6
 echo "configure:660: checking for Perl module Getopt::Long" >&5
-TMPFILE=/tmp/x
+TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
@@ -686,7 +684,7 @@ fi
 
 echo $ac_n "checking for Perl module Bit::Vector""... $ac_c" 1>&6
 echo "configure:687: checking for Perl module Bit::Vector" >&5
-TMPFILE=/tmp/x
+TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
@@ -713,7 +711,7 @@ fi
 
 echo $ac_n "checking for MakeMaker's private install paths""... $ac_c" 1>&6
 echo "configure:714: checking for MakeMaker's private install paths" >&5
-TMPDIR=/tmp/ac
+TMPDIR=/tmp/ac.$$
 rm -rf $TMPDIR 2>/dev/null
 mkdir $TMPDIR
 cat >$TMPDIR/Makefile.PL <<'EOT'
@@ -830,8 +828,6 @@ echo creating $CONFIG_STATUS
 rm -f $CONFIG_STATUS
 cat > $CONFIG_STATUS <<EOF
 #! /bin/sh
-# if we can run at the top, why should we stay at the bottom any longer?
-if [ ".$BASH" = . ]; then BASH=`which bash`; if [ ".$BASH" != . ]; then exec $BASH $0 $*; fi; fi
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,

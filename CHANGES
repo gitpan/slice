@@ -60,3 +60,9 @@
 
       o upgraded from Set::IntegerFast 3.2 to Bit::Vector 4.0 module
 
+  1.1.1 970523
+
+      o fixed problem with existing /tmp/x in configure, no /tmp/ac.$$
+      o fixed new-patchlevel target in Makefile.in
+      o added fixperm script and fixperm target
+

@@ -125,7 +125,7 @@ _BUILDDIST = \
     echo "Done"; \
     cd $$_cwd; ls -l $${_tarball};
 
-release: distclean
+release: distclean fixperm
 	@$(_GETDISTINFO) \
     _distname="slice-$${_version}"; \
     _tarball="$${_distname}.tar.gz"; \
@@ -146,13 +146,16 @@ new-revision:
 	OPT=-ir; $(NEWVERS)
 
 new-patchlevel:
-	OPT=-ip; $(NEWVERS)
+	OPT=-iP; $(NEWVERS)
 
 new-release:
 	OPT=-r$(R); $(NEWVERS)
 
 update-version:
 	$(UPDATEVERS)
+
+fixperm:
+	./etc/fixperm *
 
 # ------------------------------------------------
 #   INSTALLATION

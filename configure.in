@@ -14,7 +14,7 @@ AC_PROG_INSTALL
 
 
 AC_MSG_CHECKING([for Perl interpreter])
-TMPFILE=/tmp/x
+TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 c=0
 for dir in `echo $PATH | sed -e 's/:/ /g'`; do
@@ -38,7 +38,7 @@ AC_SUBST(path_perl)
 
 
 AC_MSG_CHECKING([for Perl module Getopt::Long])
-TMPFILE=/tmp/x
+TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
@@ -64,7 +64,7 @@ AC_SUBST(have_getoptlong)
 
 
 AC_MSG_CHECKING([for Perl module Bit::Vector])
-TMPFILE=/tmp/x
+TMPFILE=/tmp/ac.$$
 rm -f $TMPFILE
 cat >$TMPFILE <<'EOT'
 eval {
@@ -90,7 +90,7 @@ AC_SUBST(have_bitvector)
 
 
 AC_MSG_CHECKING([for MakeMaker's private install paths])
-TMPDIR=/tmp/ac
+TMPDIR=/tmp/ac.$$
 rm -rf $TMPDIR 2>/dev/null
 mkdir $TMPDIR
 cat >$TMPDIR/Makefile.PL <<'EOT'

@@ -4,25 +4,30 @@ package Vers;
 
 # for logfiles, etc.
 $SLICE_Version =
-    "1.1.0 (23-04-1997)";
+    "1.1.1 (23-05-1997)";
 
 # interactive 'hello' string to identify us to the user
 $SLICE_Hello = 
-    "This is SLICE Version 1.1.0 (23-04-1997)";
+    "This is SLICE Version 1.1.1 (23-05-1997)";
 
 # a GNU --version output
 $SLICE_GNUVersion =
-    "SLICE Version 1.1.0";
+    "SLICE Version 1.1.1";
 
 # a UNIX what(1) id string
 $SLICE_WhatID =
-    "@(#)SLICE Version 1.1.0 (23-04-1997)";
+    "@(#)SLICE Version 1.1.1 (23-05-1997)";
 
 # a RCS ident(1) id string
 $SLICE_RCSIdentID =
-    "\$Id: SLICE 1.1.0 23-04-1997 \$";
+    "\$Id: SLICE 1.1.1 23-05-1997 \$";
 
 # a WWW id string
 $SLICE_WebID =
-    "SLICE/1.1.0";
+    "SLICE/1.1.1";
+
+# a plain id string
+$SLICE_PlainID =
+    "1.1.1";
+
 1;
