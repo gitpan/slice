@@ -330,6 +330,10 @@ sub newvar {
     local($name) = @_;
     local($tmp);
 
+    if ($main::SLICESET{"$name"} eq "") {
+        print STDERR "ERROR: no such slice '$name'\n";
+        exit(1);
+    }
     $tmp = sprintf("\$T%03d", $tmpcnt++);
     return $tmp;
 }

@@ -157,21 +157,21 @@ written in HTML:
 
   <html>
   <head>
-  <title>[EN:Titlepage][DE:Titelseite]</title>
+  <title>[EN:Titlepage:][DE:Titelseite:]</title>
   </head>
   <body>
 
   <center>
-  <h1>[EN:The Title itself][DE:Der Titel selbst]</h1>
+  <h1>[EN:The Title itself:][DE:Der Titel selbst:]</h1>
   </center>
 
   <blockquote>
-  [EN:...English Abstract...]
-  [DE:...Deutsche Zusammenfassung...]
+  [EN:...English Abstract...:]
+  [DE:...Deutsche Zusammenfassung...:]
   </blockquote>
 
-  [EN:...English Text...]
-  [DE:...Deutscher Text...]
+  [EN:...English Text...:]
+  [DE:...Deutscher Text...:]
 
   </body>
   </html>

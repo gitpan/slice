@@ -16,6 +16,11 @@
       o used new Set::IntegerFast::Fill_Interval method
       o used new Set::IntegerFast::Size method
       o fixed "make clean" inside lib/
-	  o fixed "configure" target in Makefile
-	  o fixed "make clean" for t/
+      o fixed "configure" target in Makefile
+      o fixed "make clean" for t/
+
+  1.0.2  970131
+
+      o fixed setting of empty sets where low = high+1
+      o added check for existing slice names
 
