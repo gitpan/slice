@@ -36,6 +36,7 @@ void    Set_Fill   (unitptr addr);                          (* X = ~{}       *)
 
 void    Set_Empty_Interval(unitptr addr, N_int lower, N_int upper);
 void    Set_Fill_Interval (unitptr addr, N_int lower, N_int upper);
+void    Set_Flip_Interval (unitptr addr, N_int lower, N_int upper);
 
 (*      set operations on elements: *)
 
@@ -364,6 +365,45 @@ void Set_Fill_Interval(unitptr addr, N_int lower, N_int upper)
             *loaddr++ = fill;
         }
         *hiaddr |= himask;
+    }
+    *(addr + (*(addr-2) - 1))  &=  *(addr-1);
+}
+
+void Set_Flip_Interval(unitptr addr, N_int lower, N_int upper)
+{                                                  /* X = X ^ [lower..upper] */
+    unitptr loaddr;
+    unitptr hiaddr;
+    unit    lobase;
+    unit    hibase;
+    unit    lomask;
+    unit    himask;
+    unit    size;
+    unit    fill;
+
+    fill = (unit) -1L;
+
+    lobase = lower >> LOGBITS;
+    hibase = upper >> LOGBITS;
+    size = hibase - lobase;
+    loaddr = addr + lobase;
+    hiaddr = addr + hibase;
+
+    lomask = NOT ( (LSB << (lower AND MODMASK)) - 1 );
+    himask = (upper AND MODMASK) + 1;
+    if (himask < BITS) himask = (LSB << himask) - 1; else himask = (unit) -1L;
+
+    if (size == 0)
+    {
+        *loaddr ^= (lomask AND himask);
+    }
+    else if (size > 0)
+    {
+        *loaddr++ ^= lomask;
+        while (--size > 0)
+        {
+            *loaddr++ ^= fill;
+        }
+        *hiaddr ^= himask;
     }
     *(addr + (*(addr-2) - 1))  &=  *(addr-1);
 }
@@ -751,7 +791,7 @@ void Set_Copy(unitptr X, unitptr Y)                         /* X = Y         */
 /**************************************/
 /* CREATED      01.11.93              */
 /**************************************/
-/* MODIFIED     30.01.97              */
+/* MODIFIED     01.02.97              */
 /**************************************/
 /* COPYRIGHT    Steffen Beyer         */
 /**************************************/

@@ -24,3 +24,8 @@
       o fixed setting of empty sets where low = high+1
       o added check for existing slice names
 
+  1.0.3 970204
+   
+      o updated to Steffen Beyers official Set::IntegerFast 3.0 
+        module from Set-IntegerFast-3.2 bundle.
+

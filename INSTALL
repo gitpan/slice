@@ -12,7 +12,7 @@
      installed on your system:
 
      o  Perl Interpreter, Version 5.003
-     o  Perl Module: Set::IntegerFast, Version 3.2
+     o  Perl Module: Set::IntegerFast, Version 3.0
      o  Perl Module: Getopt::Long, Version 2.6
 
      If you still don't have these packages you can

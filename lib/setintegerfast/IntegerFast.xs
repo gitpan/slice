@@ -319,6 +319,31 @@ CODE:
 
 
 void
+Set_Flip_Interval(reference,lower,upper)
+Set_Object	reference
+N_int	lower
+N_int	upper
+CODE:
+{
+    Set_Handle  handle;
+    Set_Address address;
+
+    if ( SET_OBJECT_CHECK(reference,handle,address,Class_Name) )
+    {
+        if (lower >= *(address-3))
+            croak("Set::IntegerFast::Flip_Interval(): lower index out of range");
+        if (upper >= *(address-3))
+            croak("Set::IntegerFast::Flip_Interval(): upper index out of range");
+        if (lower > upper)
+            croak("Set::IntegerFast::Flip_Interval(): lower > upper index");
+        Set_Flip_Interval(address,lower,upper);
+    }
+    else
+        croak("Set::IntegerFast::Flip_Interval(): not a 'Set::IntegerFast' object reference");
+}
+
+
+void
 Set_Insert(reference,index)
 Set_Object	reference
 N_int	index

@@ -32,6 +32,7 @@ void    Set_Fill   (unitptr addr);                          /* X = ~{}       */
 
 void    Set_Empty_Interval(unitptr addr, N_int lower, N_int upper);
 void    Set_Fill_Interval (unitptr addr, N_int lower, N_int upper);
+void    Set_Flip_Interval (unitptr addr, N_int lower, N_int upper);
 
 /*      set operations on elements: */
 
@@ -168,7 +169,7 @@ void    Set_Copy        (unitptr X, unitptr Y);             /* X = Y         */
 /**************************************/
 /* CREATED      01.11.93              */
 /**************************************/
-/* MODIFIED     30.01.97              */
+/* MODIFIED     01.02.97              */
 /**************************************/
 /* COPYRIGHT    Steffen Beyer         */
 /**************************************/
